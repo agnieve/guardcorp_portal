@@ -1,12 +1,12 @@
 import {useSession, signOut, getSession} from 'next-auth/react';
 import Modal from "../components/ui/modal";
-import { useState } from 'react';
+import {useState} from 'react';
 
 export default function Profile() {
-    const { data: session, status } = useSession();
+    const {data: session, status} = useSession();
     const [open, setOpen] = useState(false);
 
-    function openHandler(){
+    function openHandler() {
         setOpen(prev => !prev)
     }
 
@@ -14,13 +14,11 @@ export default function Profile() {
 
         return (
             <div>
-                <Modal open={open} setOpen={openHandler}>
-                    <h1>Hi Test</h1>
-                    <button onClick={openHandler}>Close</button>
-                </Modal>
+                <p>Guard Corp Portal: Ver. 1.0.0</p>
                 <p>Signed in as {session.user.email}</p>
-                <button onClick={() => signOut()}>Sign out</button> <br />
-                <button onClick={openHandler}>Open Modal</button>
+                <p>Link to Download the Mobile App: <a href="https://expo.dev/artifacts/eas/4K2LoN98xWpt9V38ykiBEW.apk">GuardCorp App 1.0.0.apk</a></p>
+                <small>Please be noted that the System is still on build.
+                    There may be some changes on the UI or some screens and functions might not work.</small>
             </div>
         )
     }
