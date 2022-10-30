@@ -23,6 +23,7 @@ module.exports = (phase, { defaultConfig }) => {
       mongodb_clustername: "cluster0",
       mongodb_database: "portal-dev",
       NEXTAUTH_SECRET: 'guardcorpapp',
+      base_url: 'https://guardcorp-portal.vercel.app/'
     },
   };
 };
