@@ -9,7 +9,7 @@ const THIRTY_MINUTES = 30 * 60;
 
 export const authOptions = {
     // Configure one or more authentication providers
-    secret: process.env.SECRET,
+    secret: process.env.NEXTAUTH_SECRET,
     session: {
         strategy: "jwt",
     },
