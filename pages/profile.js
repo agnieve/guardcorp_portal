@@ -1,5 +1,4 @@
 import {useSession, signOut, getSession} from 'next-auth/react';
-import Modal from "../components/ui/modal";
 import {useState} from 'react';
 
 export default function Profile() {

@@ -6,6 +6,7 @@ import {getAllUsers} from "../../helpers/api-utils/users";
 import SitesForm from "../../components/sites/form";
 import UserList from "../../components/sites/list";
 import {getAllSites} from "../../helpers/api-utils/sites";
+import Loader from "../../components/ui/loader";
 
 export default function Sites(){
 
@@ -14,6 +15,8 @@ export default function Sites(){
     const [action, setAction] = useState('');
     const [actionSuccess, setActionSuccess] = useState(0);
     const [siteId, setSiteId] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
+
     const [form, setForm] = useState({
         siteName: '',
         address: '',
@@ -30,7 +33,12 @@ export default function Sites(){
     useEffect(()=> {
         async function fetchData(){
             if(session){
+                setIsLoading(true);
+
                 const res = await getAllSites(session.user.accessToken);
+
+                setIsLoading(false);
+
                 if(res){
                     setSites(res);
                 }
@@ -54,6 +62,10 @@ export default function Sites(){
             shiftStart: '',
             shiftEnd: ''
         });
+    }
+
+    if(isLoading){
+        return <Loader />
     }
 
     return(

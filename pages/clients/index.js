@@ -7,6 +7,7 @@ import ClientList from "../../components/clients/list";
 import {getAllClients} from "../../helpers/api-utils/clients";
 import {clientsAtom} from "../../atoms/clientsAtom";
 import {useAtom} from "jotai";
+import Loader from "../../components/ui/loader";
 
 export default function Clients(){
 
@@ -16,6 +17,8 @@ export default function Clients(){
     const [actionSuccess, setActionSuccess] = useState(0);
     const [clientId, setClientId] = useState(0);
     const [clients, setClients] = useAtom(clientsAtom);
+    const [isLoading, setIsLoading] = useState(false);
+
     const [form, setForm] = useState({
         name: '',
         address: '',
@@ -26,7 +29,13 @@ export default function Clients(){
     useEffect(()=> {
         async function fetchData(){
             if(session){
+
+                setIsLoading(true);
+
                 const res = await getAllClients(session.user.accessToken);
+
+                setIsLoading(false);
+
                 if(res){
                     setClients(res);
                 }
@@ -46,6 +55,10 @@ export default function Clients(){
             email: '',
             mobilePhone: '',
         });
+    }
+
+    if(isLoading){
+        return <Loader />
     }
 
     return(

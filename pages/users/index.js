@@ -5,6 +5,7 @@ import UserForm from "../../components/users/form";
 import {getSession, useSession} from "next-auth/react";
 import UserList from "../../components/users/list";
 import {getAllUsers} from "../../helpers/api-utils/users";
+import Loader from "../../components/ui/loader";
 
 export default function Users(props) {
 
@@ -13,6 +14,8 @@ export default function Users(props) {
     const [action, setAction] = useState('');
     const [actionSuccess, setActionSuccess] = useState(0);
     const [userId, setUserId] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
+
     const [form, setForm] = useState({
         firstName: '',
         lastName: '',
@@ -27,9 +30,16 @@ export default function Users(props) {
     const [users, setUsers] = useState([]);
 
     useEffect(()=> {
+
+
         async function fetchData(){
             if(session){
+                setIsLoading(true);
+
                 const res = await getAllUsers(session.user.accessToken);
+
+                setIsLoading(false);
+
                 if(res){
                     setUsers(res);
                 }
@@ -53,6 +63,10 @@ export default function Users(props) {
             company: '',
             role: ''
         });
+    }
+
+    if(isLoading){
+        return <Loader />
     }
 
     return (
