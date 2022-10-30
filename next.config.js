@@ -22,6 +22,7 @@ module.exports = (phase, { defaultConfig }) => {
       mongodb_password: "Evien05131997",
       mongodb_clustername: "cluster0",
       mongodb_database: "portal-dev",
+      NEXTAUTH_SECRET: 'guardcorpapp',
     },
   };
 };
