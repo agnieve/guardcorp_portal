@@ -63,7 +63,7 @@ export default function DeleteTeamMember(props) {
                     <p className={'mb-2 px-2 bg-red-400 rounded-lg text-white'}>Please type the exact word case
                         sensitive</p>}
                 <Input
-                    label={'Type CONFIRM to delete site'}
+                    label={'Type CONFIRM to delete member'}
                     inputBold={true}
                     withButton={true}
                     value={confirm}

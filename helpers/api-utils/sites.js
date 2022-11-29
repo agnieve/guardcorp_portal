@@ -1,5 +1,5 @@
-export async function fetchGeneratedLatLng(address) {
-    const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.GOOGLE_MAP_KEY}`);
+export async function fetchGeneratedLatLng(placeId) {
+    const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?place_id=${placeId}&key=${process.env.GOOGLE_MAP_KEY}`);
 
     const result = await response.json();
     return result?.results[0]?.geometry?.location;

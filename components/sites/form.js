@@ -12,6 +12,8 @@ export default function SitesForm(props) {
     const {setActionSuccess, openModal, openModalHandler, action, form, setForm, siteId, session} = props;
 
     const [searches, setSearches] = useState([]);
+    const [placesId, setPlacesId] = useState("");
+    const [selectedPlace, setSelectedPlace] = useState(false);
 
     const {data: clients} = useQuery({
         queryKey: ['clients'],
@@ -20,7 +22,7 @@ export default function SitesForm(props) {
 
     const {data: places, refetch, isError, isRefetching} = useQuery({
         queryKey: ['places'],
-        queryFn: fetchGeneratedLatLng.bind(this, form['address']),
+        queryFn: fetchGeneratedLatLng.bind(this, placesId),
         refetchOnWindowFocus: false,
         enabled: false // disable this query from automatically running
     });
@@ -33,6 +35,7 @@ export default function SitesForm(props) {
     });
 
     function setValueHandler(field, newVal) {
+
         setForm(prevState => {
             let formState = {...prevState};
             console.log(formState[field]);
@@ -83,13 +86,18 @@ export default function SitesForm(props) {
     }
 
 
-    async function generateGeocode() {
+    async function generateGeocode(searched) {
+
+        console.log(searched.place_id);
+        setPlacesId(searched.place_id);
+
         const result = await refetch();
 
         setForm(prevState => {
             let formState = {...prevState};
             console.log(formState['latitude']);
             if (result.data) {
+                formState['address'] = searched.description;
                 formState['latitude'] = result.data.lat;
                 formState['longitude'] = result.data.lng;
             }
@@ -122,24 +130,29 @@ export default function SitesForm(props) {
                             />
                             <div className={'flex flex-col'}>
 
-
-
                                 <div className={'relative mb-8'}>
                                     <Input
                                         label={'Address'}
                                         value={form['address']}
                                         setValue={async (e) => {
                                             setValueHandler('address', e.target.value)
+                                            if(e.target.value === ''){
+                                                setSelectedPlace(true);
+                                            }
+                                            setSelectedPlace(false);
                                             await searchHandler();
                                         }}
                                         withButton={true}
                                     />
                                     {
-                                        form['address'] !== '' && searches.length > 0 ?
+                                         selectedPlace === false ?
                                             <ul className={'absolute z-50 bg-slate-100 shadow-lg w-full px-1 mb-3 space-y-2'}>
                                                 {
                                                     searches.map((search, index) => <li key={index} className={'hover:bg-slate-200 py-2'}>
-                                                        <button>{search.description}</button>
+                                                        <button type={'button'} onClick={async ()=> {
+                                                            await generateGeocode(search);
+                                                            setSelectedPlace(true);
+                                                        }}>{search.description}</button>
                                                     </li>)
                                                 }
                                             </ul>: null
