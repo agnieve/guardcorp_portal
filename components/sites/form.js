@@ -138,7 +138,7 @@ export default function SitesForm(props) {
                                         form['address'] !== '' && searches.length > 0 ?
                                             <ul className={'absolute z-50 bg-slate-100 shadow-lg w-full px-1 mb-3 space-y-2'}>
                                                 {
-                                                    searches.map(search => <li className={'hover:bg-slate-200 py-2'}>
+                                                    searches.map((search, index) => <li key={index} className={'hover:bg-slate-200 py-2'}>
                                                         <button>{search.description}</button>
                                                     </li>)
                                                 }

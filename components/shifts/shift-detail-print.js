@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
 const MyDocument = () => (
     <Document>
         <Page size="A4" style={styles.page}>
-            <Image style={{zIndex:'-20', position:'absolute', top:0, right:0, width: '100%', height:100}} src={'http://localhost:3000/header.png'} />
+            <Image style={{zIndex:'-20', position:'absolute', top:0, right:0, width: '100%', height:100}} alt={'header image'} src={'http://localhost:3000/header.png'} />
             <Text style={{textAlign: 'right', marginTop: 30, marginRight:30, fontSize: 12}}>Gaisano Mall (Site Name)</Text>
             <Text style={{textAlign: 'right', fontSize:10, marginRight:30}}>11/16/2022</Text>
             <Text style={{textAlign: 'right', fontSize:10, marginRight:30}}>7:30 - 15:30</Text>
@@ -90,7 +90,7 @@ const MyDocument = () => (
                 </View>
             </View>
             <Image style={{position:'absolute', bottom: 0,
-                left: 0, width:'100%', height:70}} src={'http://localhost:3000/footer.png'} />
+                left: 0, width:'100%', height:70}} src={'http://localhost:3000/footer.png'} alt={'pdf footer'} />
         </Page>
     </Document>
 );

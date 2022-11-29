@@ -32,7 +32,7 @@ function Table({ columns, apiResult, hiddenColumns = [] }) {
 
   useEffect(()=> {
       setData(apiResult);
-  });
+  }, [data, apiResult]);
 
   const tableInstance = useTable({
       columns,
