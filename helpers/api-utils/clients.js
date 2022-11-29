@@ -61,3 +61,14 @@ export async function getAllClients(token){
         return error
     }
 }
+
+
+export async function deleteClient(token, clientId) {
+    const response = await fetch(`${process.env.base_url}/api/clients/delete?id=${clientId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        }
+    });
+
+    return await response.json();
+}

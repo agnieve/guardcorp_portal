@@ -2,19 +2,21 @@ import BreadCrumb from "../../components/ui/breadcrumb";
 import {UserPlusIcon} from '@heroicons/react/24/solid';
 import {useEffect, useState} from "react";
 import UserForm from "../../components/users/form";
-import {getSession, useSession} from "next-auth/react";
 import UserList from "../../components/users/list";
 import {getAllUsers} from "../../helpers/api-utils/users";
 import Loader from "../../components/ui/loader";
+import {useQuery} from '@tanstack/react-query';
+import {getSession} from "next-auth/react";
+import DeleteModal from "../../components/users/delete-modal";
 
 export default function Users(props) {
 
-    const {data: session, status} = useSession();
+    const { session } = props.pageProps;
+
     const [openModal, setOpenModal] = useState(false);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [action, setAction] = useState('');
-    const [actionSuccess, setActionSuccess] = useState(0);
     const [userId, setUserId] = useState(0);
-    const [isLoading, setIsLoading] = useState(false);
 
     const [form, setForm] = useState({
         firstName: '',
@@ -24,35 +26,25 @@ export default function Users(props) {
         password: '',
         confirmPassword: '',
         company: '',
-        role: ''
+        role: '',
+        licenseNumber: '',
+        profilePicture: '',
     });
 
-    const [users, setUsers] = useState([]);
-
-    useEffect(()=> {
-
-
-        async function fetchData(){
-            if(session){
-                setIsLoading(true);
-
-                const res = await getAllUsers(session.user.accessToken);
-
-                setIsLoading(false);
-
-                if(res){
-                    setUsers(res);
-                }
-            }
-        }
-        fetchData().then(r => null);
-    },[actionSuccess]);
+    const {isLoading, isError, data: users, error} = useQuery({
+        queryKey: ['users'],
+        queryFn: getAllUsers.bind(this, session.user.accessToken),
+    });
 
     function openModalHandler() {
         setOpenModal(prev => !prev);
     }
 
-    function clearFields(){
+    function setOpenDeleteModalHandler(){
+        setOpenDeleteModal(prev => !prev);
+    }
+
+    function clearFields() {
         setForm({
             firstName: '',
             lastName: '',
@@ -61,12 +53,20 @@ export default function Users(props) {
             password: '',
             confirmPassword: '',
             company: '',
-            role: ''
+            role: '',
+            licenseNumber: '',
+            profilePicture:''
         });
     }
 
-    if(isLoading){
-        return <Loader />
+    if (isLoading) {
+        return <div>
+            <Loader/>
+        </div>
+    }
+
+    if (isError) {
+        return <span>Error: {error.message}</span>
     }
 
     return (
@@ -83,24 +83,31 @@ export default function Users(props) {
                 </button>}
             />
 
+            <DeleteModal
+                userId={userId}
+                session={session}
+                form={form}
+                openModal={openDeleteModal}
+                openModalHandler={setOpenDeleteModalHandler}
+            />
+
             <UserForm
                 form={form}
                 setForm={setForm}
                 action={action}
                 openModal={openModal}
                 openModalHandler={openModalHandler}
-                setActionSuccess={setActionSuccess}
                 userId={userId}
             />
 
             <UserList
+                setOpenDeleteModal={setOpenDeleteModalHandler}
                 users={users}
                 form={form}
                 setForm={setForm}
                 action={action}
                 setAction={setAction}
                 openModal={openModalHandler.bind(this, 'edit')}
-                actionSuccess={actionSuccess}
                 setUserId={setUserId}
             />
 

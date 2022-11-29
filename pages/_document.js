@@ -4,7 +4,7 @@ export default function Document() {
     return (
         <Html>
             <Head>
-                <title>GuardCorp Portal</title>
+                {/*<title>GuardCorp Portal</title>*/}
                 <link rel="icon" href="/guardcorp_logo.png" />
             </Head>
             <body>

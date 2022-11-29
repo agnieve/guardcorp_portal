@@ -1,6 +1,21 @@
+export async function fetchGeneratedLatLng(address) {
+    const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.GOOGLE_MAP_KEY}`);
 
-export async function updateSite(id, client, token){
-    try{
+    const result = await response.json();
+    return result?.results[0]?.geometry?.location;
+}
+
+export async function fetchSearchPlaces(search) {
+
+    const response = await fetch(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${search}&types=geocode&key=AIzaSyCgi4N0oldgAPrkEBsm9BET-NB_vnzzA6s`);
+
+    const result = await response.json();
+    return result;
+}
+
+
+export async function updateSite(id, client, token) {
+    try {
 
         const response = await fetch(`${process.env.base_url}/api/sites/update?id=${id}`, {
             method: "PUT",
@@ -11,54 +26,46 @@ export async function updateSite(id, client, token){
             body: JSON.stringify(client)
         })
 
-        if(response.ok){
-            const resp = await response.json();
-            console.log(resp);
-            return resp;
-        }
-    }catch(e){
+        return await response.json();
+
+    } catch (e) {
         return e
     }
 }
 
-export async function createSite(client, token){
+export async function createSite(client, token) {
 
-    try{
+    const response = await fetch(`${process.env.base_url}/api/sites/add`, {
+        method: "POST",
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-type': 'application/json; charset=UTF-8',
+        },
+        body: JSON.stringify(client)
+    })
 
-        const response = await fetch(`${process.env.base_url}/api/sites/add`, {
-            method: "POST",
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-            body: JSON.stringify(client)
-        })
+    return await response.json();
 
-        if(response.ok){
-            const resp = await response.json();
-            console.log(resp);
-            return resp.acknowledged;
-        }
-    }catch(e){
-        return e
-    }
+
 }
 
-export async function getAllSites(token){
-    try{
+export async function getAllSites(token) {
 
-        const response = await fetch(`${process.env.base_url}/api/sites`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            }
-        });
-
-        if(response.ok){
-            return response.json();
+    const response = await fetch(`${process.env.base_url}/api/sites`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
         }
+    });
+    return response.json();
 
-    }catch (error){
-        return error
-    }
 }
 
+export async function deleteSite(token, siteId) {
+    const response = await fetch(`${process.env.base_url}/api/sites/delete?id=${siteId}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        }
+    });
+
+    return await response.json();
+}

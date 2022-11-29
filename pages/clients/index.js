@@ -1,23 +1,23 @@
-import {getSession, useSession} from "next-auth/react";
+import {getSession} from "next-auth/react";
 import {UserPlusIcon} from "@heroicons/react/24/solid";
 import BreadCrumb from "../../components/ui/breadcrumb";
-import {useEffect, useState} from "react";
 import ClientForm from "../../components/clients/form";
+import DeleteModal from "../../components/clients/delete-modal";
 import ClientList from "../../components/clients/list";
 import {getAllClients} from "../../helpers/api-utils/clients";
-import {clientsAtom} from "../../atoms/clientsAtom";
-import {useAtom} from "jotai";
+import {useQuery} from '@tanstack/react-query';
+
 import Loader from "../../components/ui/loader";
+import {useState} from "react";
 
-export default function Clients(){
+export default function Clients(props){
 
-    const {data: session, status} = useSession();
+    const { session } = props.pageProps;
     const [openModal, setOpenModal] = useState(false);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [action, setAction] = useState('');
     const [actionSuccess, setActionSuccess] = useState(0);
     const [clientId, setClientId] = useState(0);
-    const [clients, setClients] = useAtom(clientsAtom);
-    const [isLoading, setIsLoading] = useState(false);
 
     const [form, setForm] = useState({
         name: '',
@@ -26,23 +26,10 @@ export default function Clients(){
         mobilePhone: '',
     });
 
-    useEffect(()=> {
-        async function fetchData(){
-            if(session){
-
-                setIsLoading(true);
-
-                const res = await getAllClients(session.user.accessToken);
-
-                setIsLoading(false);
-
-                if(res){
-                    setClients(res);
-                }
-            }
-        }
-        fetchData().then(r => null);
-    },[actionSuccess]);
+    const {isLoading, isError, data: clients, error} = useQuery({
+        queryKey: ['clients'],
+        queryFn: getAllClients.bind(this, session.user.accessToken),
+    });
 
     function openModalHandler() {
         setOpenModal(prev => !prev);
@@ -55,6 +42,10 @@ export default function Clients(){
             email: '',
             mobilePhone: '',
         });
+    }
+
+    function setOpenDeleteModalHandler(){
+        setOpenDeleteModal(prev => !prev);
     }
 
     if(isLoading){
@@ -83,7 +74,16 @@ export default function Clients(){
                 clientId={clientId}
             />
 
+            <DeleteModal
+                clientId={clientId}
+                session={session}
+                form={form}
+                openModal={openDeleteModal}
+                openModalHandler={setOpenDeleteModalHandler}
+            />
+
             <ClientList
+                setOpenDeleteModal={setOpenDeleteModalHandler}
                 clients={clients}
                 form={form}
                 setForm={setForm}

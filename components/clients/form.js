@@ -3,10 +3,12 @@ import Input from "../ui/input";
 import {formSettings} from "../../constants/client";
 import {createClient, updateClient} from "../../helpers/api-utils/clients";
 import {useSession} from "next-auth/react";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {createUser, updateUser} from "../../helpers/api-utils/users";
 
 export default function ClientForm(props) {
 
-    const {setActionSuccess, openModal, openModalHandler, action, form, setForm, clientId} = props;
+    const {openModal, openModalHandler, action, form, setForm, clientId} = props;
     const {data: session, status} = useSession();
 
     function setValueHandler(field, newVal) {
@@ -18,29 +20,42 @@ export default function ClientForm(props) {
         });
     }
 
+    const queryClient = useQueryClient();
+
+    const mutation = useMutation({
+        mutationFn: async (data) => {
+            if (data.type === 'add') {
+                return await createClient(data.body, data.header)
+            } else {
+                return await updateClient(data.clientId, data.body, data.header)
+            }
+        },
+        onSuccess: ()=> {
+            queryClient.invalidateQueries(['clients']);
+            queryClient.refetchQueries('clients', {force: true});
+        }
+    });
+
     async function submitHandler(e) {
         e.preventDefault();
 
         if (session) {
-            const token = session.user.accessToken;
-            let result;
-            switch (action) {
-                case 'add':
-                    result = await createClient(form, token);
-                    if (result) {
-                        setActionSuccess(prev => prev + 1)
-                        openModalHandler();
-                    }
-                    break;
-                case 'edit':
-                    result = await updateClient(clientId, form, token);
-                    if (result) {
-                        if (result.modifiedCount === 1) {
-                            setActionSuccess(prev => prev + 1)
-                            openModalHandler();
-                        }
-                    }
-                    break;
+
+            const data = {
+                body: form,
+                header: session.user.accessToken,
+                clientId: clientId,
+                type: action
+            }
+
+            const result = await mutation.mutateAsync(data);
+
+            try{
+                if(result){
+                    openModalHandler();
+                }
+            }catch(error){
+                console.log(error);
             }
 
         }
@@ -62,6 +77,7 @@ export default function ClientForm(props) {
                                 name={set.name}
                                 value={form[set.name]}
                                 type={set.type}
+                                withButton={true}
                                 setValue={(e) => setValueHandler(set.name, e.target.value)}
                             />) : null
                 }

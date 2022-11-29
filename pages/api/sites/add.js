@@ -6,7 +6,7 @@ async function handler(req, res) {
 
     if (req.method === 'POST') {
 
-        const {siteName, address, clientId, latitude, longitude, complianceInformation, shiftStart, shiftEnd} = req.body;
+        const {siteName, address, clientId, latitude, longitude, complianceInformation} = req.body;
 
         let client;
         let db;
@@ -39,7 +39,7 @@ async function handler(req, res) {
 
 
             const result = await db.collection("sites").insertOne({
-                siteName, address, clientId, latitude, longitude, complianceInformation, shiftStart, shiftEnd
+                siteName, address, clientId, latitude, longitude, complianceInformation
             });
 
             if (!result) {

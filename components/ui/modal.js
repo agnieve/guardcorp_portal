@@ -2,11 +2,11 @@ import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 
 export default function Example(props) {
-    const { open, setOpen } = props;
+    const { open, setOpen, width } = props;
 
     return (
         <Transition.Root show={open} as={Fragment}>
-            <Dialog as="div" className="relative z-10" onClose={setOpen}>
+            <Dialog as="div" className="relative z-0" onClose={setOpen}>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -30,7 +30,7 @@ export default function Example(props) {
                             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         >
-                            <div className={'bg-white p-2 rounded-lg w-1/2 h-auto'}>
+                            <div className={`bg-white p-2 rounded-lg ${width ? width : 'w-1/2'} h-auto`}>
                                 {props.children}
                             </div>
                         </Transition.Child>

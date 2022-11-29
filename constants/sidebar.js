@@ -1,5 +1,5 @@
-
-import { ChartBarIcon,
+import {
+    ChartBarIcon,
     BellAlertIcon,
     ClipboardDocumentListIcon,
     LightBulbIcon,
@@ -16,22 +16,17 @@ export const sidebarContent = [
             {
                 label: 'Overview',
                 link: '/overview',
-                icon: <ChartBarIcon className="h-6 w-6 text-white" />
+                icon: <ChartBarIcon className="h-6 w-6 text-white"/>
             },
             {
                 label: 'Alerts',
                 link: '/alerts',
-                icon: <BellAlertIcon className="h-6 w-6 text-white" />
+                icon: <BellAlertIcon className="h-6 w-6 text-white"/>
             },
             {
-                label: 'Shifts',
-                link:'/shifts',
-                icon: <ClipboardDocumentListIcon className="h-6 w-6 text-white" />
-            },
-            {
-                label:'Events',
+                label: 'Incidents',
                 link: '/events',
-                icon: <LightBulbIcon className="h-6 w-6 text-white" />
+                icon: <LightBulbIcon className="h-6 w-6 text-white"/>
             }
         ]
     },
@@ -39,25 +34,26 @@ export const sidebarContent = [
         title: 'Administration',
         sidebars: [
             {
-                label:'Clients',
-                link: '/clients',
-                icon: <UserGroupIcon className="h-6 w-6 text-white" />
-            },
-            {
-                label:'Sites',
-                link: '/sites',
-                icon: <BuildingOfficeIcon className="h-6 w-6 text-white" />
-            },
-            {
-                label:'Users',
+                label: 'Users',
                 link: '/users',
-                icon: <UserIcon className="h-6 w-6 text-white" />
+                icon: <UserIcon className="h-6 w-6 text-white"/>
             },
             {
-                label:'Activities',
-                link: '/activities',
-                icon: <RocketLaunchIcon className="h-6 w-6 text-white" />
+                label: 'Clients',
+                link: '/clients',
+                icon: <UserGroupIcon className="h-6 w-6 text-white"/>
             },
+            {
+                label: 'Sites',
+                link: '/sites',
+                icon: <BuildingOfficeIcon className="h-6 w-6 text-white"/>
+            },
+            {
+                label: 'Shifts',
+                link: '/shifts',
+                icon: <ClipboardDocumentListIcon className="h-6 w-6 text-white"/>
+            },
+
         ]
     }
 ];

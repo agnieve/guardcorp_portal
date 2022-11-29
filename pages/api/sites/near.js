@@ -42,8 +42,6 @@ export default async function handler(req, res) {
                     latitude: site.latitude,
                     longitude: site.longitude,
                     complianceInformation: site.complianceInformation,
-                    shiftStart: site.shiftStart,
-                    shiftEnd: site.shiftEnd,
                     distanceFromSite: meters
                 };
 

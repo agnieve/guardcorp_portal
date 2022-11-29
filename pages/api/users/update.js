@@ -6,7 +6,7 @@ import {ObjectId} from "mongodb";
 async function handler(req, res) {
 
     if (req.method === 'PUT') {
-        const {email, firstName, lastName, mobilePhone, role} = req.body;
+        const {email, firstName, lastName, mobilePhone,profilePicture, licenseNumber, role} = req.body;
         const { id } = req.query;
 
         let client;
@@ -38,11 +38,32 @@ async function handler(req, res) {
                     firstName : firstName,
                     lastName : lastName,
                     mobilePhone : mobilePhone,
-                    role : role
+                    role : role,
+                    licenseNumber: licenseNumber,
+                    profilePicture:profilePicture,
+                    fullName: `${firstName} ${lastName}`
+                }
+            });
+
+            const result2 = await db.collection("shift_members").updateMany({
+                'user._id': ObjectId(id)
+            }, {
+                $set: {
+                    user: {
+                        email : email,
+                        firstName : firstName,
+                        lastName : lastName,
+                        mobilePhone : mobilePhone,
+                        role : role,
+                        licenseNumber: licenseNumber,
+                        profilePicture:profilePicture,
+                        fullName: `${firstName} ${lastName}`
+                    }
                 }
             });
 
             console.log(result);
+            console.log(result2);
 
             if(result.matchedCount === 0) throw Error('No User');
             if(result.modifiedCount === 0) throw Error('No need to modify');

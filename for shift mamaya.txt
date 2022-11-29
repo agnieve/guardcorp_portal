@@ -1,0 +1,23 @@
+<div className="w-full mt-3">
+                    <h4 className={'text-left mb-2 text-lg'}>Schedule</h4>
+                    <div className={'flex justify-start space-x-4'}>
+                        <div>
+                            <label htmlFor="shiftStart" className={'mr-4 text-slate-400'}>Shift Start</label>
+                            <input value={form.shiftStart}
+                                   className={'border-b border-slate-400'}
+                                   id={'shiftStart'}
+                                   type={'time'}
+                                   onChange={(e) => setValueHandler('shiftStart', e.target.value)}
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="shiftEnd" className={'mr-4 text-slate-400'}>Shift End</label>
+                            <input value={form.shiftEnd}
+                                   className={'border-b border-slate-400'}
+                                   id={'shiftEnd'}
+                                   type={'time'}
+                                   onChange={(e) => {setValueHandler('shiftEnd', e.target.value)}}
+                            />
+                        </div>
+                    </div>
+                </div>

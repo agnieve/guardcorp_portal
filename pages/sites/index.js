@@ -1,21 +1,23 @@
 import {getSession, useSession} from "next-auth/react";
 import {PlusIcon} from "@heroicons/react/24/solid";
 import BreadCrumb from "../../components/ui/breadcrumb";
-import {useEffect, useState} from "react";
-import {getAllUsers} from "../../helpers/api-utils/users";
+import {useState} from "react";
 import SitesForm from "../../components/sites/form";
-import UserList from "../../components/sites/list";
 import {getAllSites} from "../../helpers/api-utils/sites";
 import Loader from "../../components/ui/loader";
+import {useQuery} from "@tanstack/react-query";
+import DeleteModal from "../../components/sites/delete-modal";
+import SiteList from "../../components/sites/list";
 
-export default function Sites(){
+export default function Sites(props){
 
-    const {data: session, status} = useSession();
+    const { session } = props.pageProps;
+
     const [openModal, setOpenModal] = useState(false);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const [action, setAction] = useState('');
     const [actionSuccess, setActionSuccess] = useState(0);
     const [siteId, setSiteId] = useState(0);
-    const [isLoading, setIsLoading] = useState(false);
 
     const [form, setForm] = useState({
         siteName: '',
@@ -24,31 +26,19 @@ export default function Sites(){
         latitude: '',
         longitude: '',
         complianceInformation: '',
-        shiftStart: '',
-        shiftEnd: ''
     });
 
-    const [sites, setSites] = useState([]);
-
-    useEffect(()=> {
-        async function fetchData(){
-            if(session){
-                setIsLoading(true);
-
-                const res = await getAllSites(session.user.accessToken);
-
-                setIsLoading(false);
-
-                if(res){
-                    setSites(res);
-                }
-            }
-        }
-        fetchData().then(r => null);
-    },[actionSuccess]);
+    const {isLoading, isError, data: sites, error} = useQuery({
+        queryKey: ['sites'],
+        queryFn: getAllSites.bind(this, session.user.accessToken),
+    });
 
     function openModalHandler() {
         setOpenModal(prev => !prev);
+    }
+
+    function setOpenDeleteModalHandler(){
+        setOpenDeleteModal(prev => !prev);
     }
 
     function clearFields(){
@@ -59,8 +49,6 @@ export default function Sites(){
             latitude: '',
             longitude: '',
             complianceInformation: '',
-            shiftStart: '',
-            shiftEnd: ''
         });
     }
 
@@ -81,7 +69,16 @@ export default function Sites(){
                 </button>}
             />
 
+            <DeleteModal
+                siteId={siteId}
+                session={session}
+                form={form}
+                openModal={openDeleteModal}
+                openModalHandler={setOpenDeleteModalHandler}
+            />
+
             <SitesForm
+                session={session}
                 form={form}
                 setForm={setForm}
                 action={action}
@@ -91,7 +88,9 @@ export default function Sites(){
                 siteId={siteId}
             />
 
-            <UserList
+            <SiteList
+                setOpenDeleteModal={setOpenDeleteModalHandler}
+                session={session}
                 sites={sites}
                 form={form}
                 setForm={setForm}

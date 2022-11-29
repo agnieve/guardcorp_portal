@@ -1,22 +1,12 @@
 export const formSettings = [
     {
-        label: 'Site Name',
-        name: 'siteName',
-        type: 'text',
-    },
-    {
-        label: 'Address',
-        name: 'address',
-        type: 'text',
-    },
-    {
         label: 'Latitude',
         name: 'latitude',
-        type: 'text',
+        type: 'hidden',
     },
     {
         label: 'Longitude',
         name: 'longitude',
-        type: 'text',
+        type: 'hidden',
     },
 ];

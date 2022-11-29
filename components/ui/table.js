@@ -34,8 +34,7 @@ function Table({ columns, apiResult, hiddenColumns = [] }) {
       setData(apiResult);
   });
 
-  const tableInstance = useTable(
-    {
+  const tableInstance = useTable({
       columns,
       data,
       initialState: { pageIndex: 0, hiddenColumns: hiddenColumns },
@@ -110,9 +109,9 @@ function Table({ columns, apiResult, hiddenColumns = [] }) {
         className="table-auto w-full border-collapse rounded-t-lg"
       >
         <thead className="bg-slate-100">
-          {headerGroups.map((headerGroup, index) => (
+          {headerGroups?.map((headerGroup, index) => (
             <tr key={index} {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column, index) => (
+              {headerGroup.headers?.map((column, index) => (
                 <th
                   className={`px-3 py-5 border-r text-left text-neutral-700 text-sm ${
                     index === 0 && "rounded-tl-lg"
@@ -141,14 +140,14 @@ function Table({ columns, apiResult, hiddenColumns = [] }) {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {page.map((row, index) => {
+          {page?.map((row, index) => {
             prepareRow(row);
             return (
               <tr
                 className={`${index % 2 == 0 ? "bg-white" : "bg-slate-100"}`}
                 {...row.getRowProps()}
               >
-                {row.cells.map((cell, index) => {
+                {row.cells?.map((cell, index) => {
                   return (
                     <td className={`py-4 px-3 `} {...cell.getCellProps()}>
                       {cell.render("Cell")}

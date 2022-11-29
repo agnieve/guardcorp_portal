@@ -7,7 +7,7 @@ export default function SideBar() {
     return (
         <div className={'w-1/6 bg-slate-500 p-5'}>
             {sidebarContent.length > -1 ?
-                sidebarContent.map((sidebarHeader,index1) =>
+                sidebarContent.map((sidebarHeader, index1) =>
                     <div key={index1}>
                         <h4 className={'text-white font-bold mb-5'}>{sidebarHeader.title}</h4>
                         {sidebarHeader.sidebars.length > -1 ?

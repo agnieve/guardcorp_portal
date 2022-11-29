@@ -6,7 +6,7 @@ import {ObjectId} from "mongodb";
 async function handler(req, res) {
 
     if (req.method === 'PUT') {
-        const {siteName, address, clientId, latitude, longitude, complianceInformation, shiftStart, shiftEnd} = req.body;
+        const {siteName, address, clientId, latitude, longitude, complianceInformation} = req.body;
         const { id } = req.query;
 
         let client;
@@ -40,12 +40,19 @@ async function handler(req, res) {
                     latitude: latitude,
                     longitude: longitude,
                     complianceInformation: complianceInformation,
-                    shiftStart: shiftStart,
-                    shiftEnd: shiftEnd
+                }
+            });
+
+            const result2 = await db.collection("shifts").updateMany({
+                'site._id': ObjectId(id)
+            }, {
+                $set: {
+                    'site.siteName': siteName,
                 }
             });
 
             console.log(result);
+            console.log(result2);
 
             if(result.matchedCount === 0) throw Error('No Client');
             if(result.modifiedCount === 0) throw Error('No need to modify');
