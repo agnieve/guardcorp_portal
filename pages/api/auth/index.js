@@ -7,11 +7,11 @@ export default async function handler(req, res) {
 
     if (req.method === 'POST') {
 
-        const {email, password} = req.body;
+        const {licenseNumber} = req.body;
 
-        // if (!email || !email.includes('@') || !password || password.trim().length < 7) {
-        //     res.status(422).json({message: 'Invalid Input - password should also be at least 7 characters long.'});
-        // }
+        if (!licenseNumber) {
+            res.status(422).json({message: 'Invalid Input - License number is required'});
+        }
 
         let client;
         let db;
@@ -29,29 +29,19 @@ export default async function handler(req, res) {
             const userCollection = db.collection("users");
 
             const user = await userCollection.findOne({
-                email: email,
-                role: 'guard'
+                licenseNumber: licenseNumber,
             });
 
             if (!user) {
                 await client.close();
-                throw new Error("No users found!");
-            }
-
-            const isValid = await verifyPassword(
-                password,
-                user.password
-            );
-
-            if (!isValid) {
-                throw new Error("Could not log you in!");
+                throw new Error("No user found!");
             }
 
             await client.close();
 
             const secret = process.env.NEXTAUTH_SECRET;
             const jwt = require('jsonwebtoken');
-            const token = jwt.sign({email: user.email, role: user.role}, secret);
+            const token = jwt.sign({licenseNumber: user.licenseNumber}, secret);
 
             res.status(200).json({...user, ...{token: token}});
             return
