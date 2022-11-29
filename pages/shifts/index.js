@@ -47,7 +47,9 @@ export default function Shifts(props) {
     }
 
     if (isFetching) {
-        return <Loader/>
+        return <div className="relative h-full">
+            <Loader/>
+        </div>
     }
 
     return (
