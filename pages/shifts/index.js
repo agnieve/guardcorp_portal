@@ -1,3 +1,5 @@
+'use client';
+
 import {getSession} from "next-auth/react";
 import {useMemo, useState} from "react";
 import BreadCrumb from "../../components/ui/breadcrumb";
@@ -47,7 +49,7 @@ export default function Shifts(props) {
     }
 
     if (isFetching) {
-        return <div className="relative h-full">
+        return <div className="relative h-[90.2vh] 2xl:h-screen">
             <Loader/>
         </div>
     }
