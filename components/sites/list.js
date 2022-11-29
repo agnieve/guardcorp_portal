@@ -94,7 +94,7 @@ export default function SiteList(props){
     );
 
     if(isFetching){
-        return <Loader />
+        return null;
     }
 
     return (
