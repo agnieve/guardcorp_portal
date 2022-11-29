@@ -47,10 +47,10 @@ export default function Shifts(props) {
     function addMemberHandler() {
         setShowAddMember(prev => !prev);
     }
-    //
-    // if (isFetching) {
-    //     return <Loader/>
-    // }
+
+    if (isFetching) {
+        return null
+    }
 
     return (
         <div className={''}>

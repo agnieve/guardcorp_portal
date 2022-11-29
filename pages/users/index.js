@@ -59,11 +59,9 @@ export default function Users(props) {
         });
     }
 
-    // if (isLoading) {
-    //     return <div>
-    //         <Loader/>
-    //     </div>
-    // }
+    if (isLoading) {
+        return null
+    }
 
     if (isError) {
         return <span>Error: {error.message}</span>

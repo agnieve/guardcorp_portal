@@ -47,10 +47,10 @@ export default function Clients(props){
     function setOpenDeleteModalHandler(){
         setOpenDeleteModal(prev => !prev);
     }
-    //
-    // if(isLoading){
-    //     return <Loader />
-    // }
+
+    if (isLoading) {
+        return null
+    }
 
     return(
         <div className={''}>
