@@ -51,10 +51,10 @@ export default function Sites(props){
             complianceInformation: '',
         });
     }
-
-    if(isLoading){
-        return <Loader />
-    }
+    //
+    // if(isLoading){
+    //     return <Loader />
+    // }
 
     return(
         <div className={''}>

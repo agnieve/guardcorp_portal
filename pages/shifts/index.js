@@ -47,12 +47,10 @@ export default function Shifts(props) {
     function addMemberHandler() {
         setShowAddMember(prev => !prev);
     }
-
-    if (isFetching) {
-        return <div className="relative h-[90.2vh] 2xl:h-screen">
-            <Loader/>
-        </div>
-    }
+    //
+    // if (isFetching) {
+    //     return <Loader/>
+    // }
 
     return (
         <div className={''}>

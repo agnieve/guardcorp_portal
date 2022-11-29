@@ -59,11 +59,11 @@ export default function Users(props) {
         });
     }
 
-    if (isLoading) {
-        return <div>
-            <Loader/>
-        </div>
-    }
+    // if (isLoading) {
+    //     return <div>
+    //         <Loader/>
+    //     </div>
+    // }
 
     if (isError) {
         return <span>Error: {error.message}</span>
