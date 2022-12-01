@@ -27,7 +27,7 @@ export default function SitesForm(props) {
         enabled: false // disable this query from automatically running
     });
 
-    const {data: searchPlaces, refetch:refetchSearch} = useQuery({
+    const {data: searchPlaces, refetch:refetchSearch, isRefetching:isRefetchingSearch} = useQuery({
         queryKey: ['searchPlaces'],
         queryFn: fetchSearchPlaces.bind(this, form['address']),
         refetchOnWindowFocus: false,
@@ -111,6 +111,10 @@ export default function SitesForm(props) {
         console.log(result);
     }
 
+    if(isRefetchingSearch){
+        return null;
+    }
+
     return (<Modal open={openModal} setOpen={openModalHandler}>
         <div className={'flex flex-col h-96 overflow-y-auto'}>
             <div className={'flex px-2 pt-2'}>
@@ -145,10 +149,10 @@ export default function SitesForm(props) {
                                         withButton={true}
                                     />
                                     {
-                                         selectedPlace === false ?
+                                         selectedPlace !== true ?
                                             <ul className={'absolute z-50 bg-slate-100 shadow-lg w-full px-1 mb-3 space-y-2'}>
                                                 {
-                                                    searches.map((search, index) => <li key={index} className={'hover:bg-slate-200 py-2'}>
+                                                    searches.length > 0 && searches.map((search, index) => <li key={index} className={'hover:bg-slate-200 py-2'}>
                                                         <button type={'button'} onClick={async ()=> {
                                                             await generateGeocode(search);
                                                             setSelectedPlace(true);
