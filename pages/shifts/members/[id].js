@@ -28,12 +28,12 @@ export default function ShiftMembers(props) {
     const [shiftMemberId, setShiftMemberId] = useState("");
     const [modalDelete, setModalDelete] = useState(false);
 
-    if (isLoading) {
-        return null
-    }
-
     function modalDeleteHandler() {
         setModalDelete(prev => !prev);
+    }
+
+    if (isLoading) {
+        return <Loader />
     }
 
     return (

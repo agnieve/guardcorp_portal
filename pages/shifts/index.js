@@ -35,7 +35,7 @@ export default function Shifts(props) {
         queryFn: getAllShifts.bind(this, session.user.accessToken),
     });
 
-    const {data: sites} = useQuery({
+    const {data: sites, isFetching:isFetchingSites} = useQuery({
         queryKey: ['sites'],
         queryFn: getAllSites.bind(this, session.user.accessToken),
     });
@@ -48,8 +48,8 @@ export default function Shifts(props) {
         setShowAddMember(prev => !prev);
     }
 
-    if (isFetching) {
-        return null
+    if (isFetching && isFetchingSites) {
+        return <Loader />
     }
 
     return (

@@ -49,7 +49,7 @@ export default function Clients(props){
     }
 
     if (isLoading) {
-        return null
+        return <Loader />
     }
 
     return(

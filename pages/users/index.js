@@ -60,7 +60,7 @@ export default function Users(props) {
     }
 
     if (isLoading) {
-        return null
+        return <Loader />
     }
 
     if (isError) {

@@ -52,7 +52,7 @@ export default function Sites(props){
         });
     }
     if (isLoading) {
-        return null
+        return <Loader />
     }
 
     return(
