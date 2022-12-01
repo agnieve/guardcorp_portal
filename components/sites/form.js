@@ -111,10 +111,6 @@ export default function SitesForm(props) {
         console.log(result);
     }
 
-    if(isRefetchingSearch){
-        return null;
-    }
-
     return (<Modal open={openModal} setOpen={openModalHandler}>
         <div className={'flex flex-col h-96 overflow-y-auto'}>
             <div className={'flex px-2 pt-2'}>
