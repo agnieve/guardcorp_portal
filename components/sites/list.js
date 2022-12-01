@@ -1,22 +1,17 @@
 import Table from "../ui/table";
-import { useMemo } from "react";
+import {useMemo} from "react";
 import {PencilIcon, TrashIcon} from '@heroicons/react/24/solid';
 import {useQuery} from "@tanstack/react-query";
 import {getAllClients} from "../../helpers/api-utils/clients";
 import Loader from "../ui/loader";
 
-export default function SiteList(props){
+export default function SiteList(props) {
 
-    const {sites, openModal, setAction, setForm, setSiteId, session, setOpenDeleteModal} = props;
+    const {clients, sites, openModal, setAction, setForm, setSiteId, session, setOpenDeleteModal} = props;
 
-    const { isFetching, data: clients } = useQuery({
-        queryKey: ['clients'],
-        queryFn: getAllClients.bind(this, session.user.accessToken),
-    });
-
-    function actionButtons(original){
+    function actionButtons(original) {
         return (<div className={'flex justify-end'}>
-            <button onClick={()=> {
+            <button onClick={() => {
                 setSiteId(original._id);
 
                 setForm(prevState => {
@@ -34,9 +29,9 @@ export default function SiteList(props){
                 openModal();
                 setAction('edit');
             }} className={'mx-2'}>
-                <PencilIcon className="h-5 w-5 text-slate-500" />
+                <PencilIcon className="h-5 w-5 text-slate-500"/>
             </button>
-            <button className={'mx-2'} onClick={()=> {
+            <button className={'mx-2'} onClick={() => {
 
                 setSiteId(original._id);
 
@@ -55,7 +50,7 @@ export default function SiteList(props){
 
                 setOpenDeleteModal();
             }}>
-                <TrashIcon className="h-5 w-5 text-slate-500" />
+                <TrashIcon className="h-5 w-5 text-slate-500"/>
             </button>
         </div>);
     }
@@ -73,10 +68,8 @@ export default function SiteList(props){
             Header: 'Client',
             accessor: 'clientId',
             Cell: function ({row: {original}}) {
-                if(!isFetching){
-                    const result = clients?.find(client => client._id === original.clientId);
-                    return result?.name
-                }
+                const result = clients?.find(client => client._id === original.clientId);
+                return result?.name
             }
         },
         {
@@ -88,18 +81,9 @@ export default function SiteList(props){
         }
     ];
 
-    const data = useMemo(
-        () => sites,
-        [sites]
-    );
-
-    if(isFetching){
-        return null;
-    }
-
     return (
         <div>
-            <Table columns={columns} apiResult={data} hiddenColumns={["lastName"]} />
+            <Table columns={columns} apiResult={sites} hiddenColumns={["lastName"]}/>
         </div>
     )
 }

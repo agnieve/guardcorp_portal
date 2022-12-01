@@ -8,6 +8,7 @@ import Loader from "../../components/ui/loader";
 import {useQuery} from "@tanstack/react-query";
 import DeleteModal from "../../components/sites/delete-modal";
 import SiteList from "../../components/sites/list";
+import {getAllClients} from "../../helpers/api-utils/clients";
 
 export default function Sites(props){
 
@@ -33,6 +34,11 @@ export default function Sites(props){
         queryFn: getAllSites.bind(this, session.user.accessToken),
     });
 
+    const { isFetching, data: clients } = useQuery({
+        queryKey: ['clients'],
+        queryFn: getAllClients.bind(this, session.user.accessToken),
+    });
+
     function openModalHandler() {
         setOpenModal(prev => !prev);
     }
@@ -51,7 +57,7 @@ export default function Sites(props){
             complianceInformation: '',
         });
     }
-    if (isLoading) {
+    if (isLoading && isFetching) {
         return <Loader />
     }
 
@@ -88,6 +94,7 @@ export default function Sites(props){
             />
 
             <SiteList
+                clients={clients}
                 setOpenDeleteModal={setOpenDeleteModalHandler}
                 session={session}
                 sites={sites}
