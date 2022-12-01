@@ -1,3 +1,5 @@
+'use client';
+
 import {useRouter} from "next/router";
 import BreadCrumb from "../../../components/ui/breadcrumb";
 import Link from "next/link";

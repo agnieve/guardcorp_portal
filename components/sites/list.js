@@ -7,7 +7,7 @@ import Loader from "../ui/loader";
 
 export default function SiteList(props) {
 
-    const {clients, sites, openModal, setAction, setForm, setSiteId, session, setOpenDeleteModal} = props;
+    const {clients, sites, openModal, setAction, setForm, setSiteId, setOpenDeleteModal} = props;
 
     function actionButtons(original) {
         return (<div className={'flex justify-end'}>
@@ -69,7 +69,7 @@ export default function SiteList(props) {
             accessor: 'clientId',
             Cell: function ({row: {original}}) {
                 const result = clients?.find(client => client._id === original.clientId);
-                return result ? result : null;
+                return result ? result.name : null;
             }
         },
         {
@@ -83,7 +83,7 @@ export default function SiteList(props) {
 
     return (
         <div>
-            <Table columns={columns} apiResult={sites && sites.length > 0 ? sites : []} hiddenColumns={["lastName"]}/>
+            <Table columns={columns} apiResult={sites && sites.length > 0 ? sites : []} />
         </div>
     )
 }

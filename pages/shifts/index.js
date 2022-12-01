@@ -1,3 +1,4 @@
+'use client';
 
 import {getSession} from "next-auth/react";
 import {useMemo, useState} from "react";

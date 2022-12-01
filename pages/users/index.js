@@ -1,3 +1,5 @@
+'use client';
+
 import BreadCrumb from "../../components/ui/breadcrumb";
 import {UserPlusIcon} from '@heroicons/react/24/solid';
 import {useEffect, useState} from "react";

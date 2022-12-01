@@ -1,3 +1,5 @@
+'use client';
+
 import {getSession} from "next-auth/react";
 import {DocumentIcon} from "@heroicons/react/24/solid";
 import BreadCrumb from "../../components/ui/breadcrumb";

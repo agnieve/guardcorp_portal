@@ -27,12 +27,7 @@ const IndeterminateCheckbox = React.forwardRef(
 );
 
 function Table({ columns, apiResult, hiddenColumns = [] }) {
-  const [col, setCol] = useState(columns);
-  const [data, setData] = useState(apiResult);
-
-  useEffect(()=> {
-      setData(apiResult);
-  }, [data, apiResult]);
+  const data = apiResult;
 
   const tableInstance = useTable({
       columns,
