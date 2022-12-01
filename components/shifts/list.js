@@ -76,7 +76,7 @@ export default function List(props){
 
     return (
         <div>
-            <Table columns={columns} apiResult={data} hiddenColumns={["lastName"]} />
+            <Table columns={columns} apiResult={data ? data : []} hiddenColumns={["lastName"]} />
         </div>
     )
 }
