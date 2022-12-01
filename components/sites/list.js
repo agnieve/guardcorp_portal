@@ -69,7 +69,7 @@ export default function SiteList(props) {
             accessor: 'clientId',
             Cell: function ({row: {original}}) {
                 const result = clients?.find(client => client._id === original.clientId);
-                return result?.name
+                return result ? result : null;
             }
         },
         {
@@ -83,7 +83,7 @@ export default function SiteList(props) {
 
     return (
         <div>
-            <Table columns={columns} apiResult={sites} hiddenColumns={["lastName"]}/>
+            <Table columns={columns} apiResult={sites && sites.length > 0 ? sites : []} hiddenColumns={["lastName"]}/>
         </div>
     )
 }
