@@ -34,31 +34,28 @@ export default function ShiftDetailList(props) {
         </div>);
     }
 
-    const columns = useMemo(
-        () => [
-            {
-                Header: "Date",
-                accessor: "date",
-            },
-            {
-                Header: "Members Active",
-                accessor: "membersActive",
-                Cell: function ({row: {original}}) {
-                    return <ul>
-                        {original.presentMembers.map(present => <li key={present._id}>{present.name} - {present.timeIn}</li>)}
-                    </ul>
-                }
-            },
-            {
-                Header: "Action",
-                accessor: "action",
-                Cell: function ({row: {original}}) {
-                    return actionButtons(original);
-                }
+    const columns =[
+        {
+            Header: "Date",
+            accessor: "date",
+        },
+        {
+            Header: "Members Active",
+            accessor: "membersActive",
+            Cell: function ({row: {original}}) {
+                return <ul>
+                    {original.presentMembers.map(present => <li key={present._id}>{present.name} - {present.timeIn}</li>)}
+                </ul>
             }
-        ],
-        []
-    );
+        },
+        {
+            Header: "Action",
+            accessor: "action",
+            Cell: function ({row: {original}}) {
+                return actionButtons(original);
+            }
+        }
+    ];
 
     return (
         <div>

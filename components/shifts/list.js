@@ -49,33 +49,30 @@ export default function List(props){
         </div>);
     }
 
-    const columns = useMemo(
-        () => [
-            {
-                Header: "Time In",
-                accessor: "timeIn",
-            },
-            {
-                Header: "Time Out",
-                accessor: "timeOut",
-            },
-            {
-                Header: "Site",
-                accessor: "site",
-                Cell: function ({row: {original}}) {
-                    return original.site?.siteName;
-                }
-            },
-            {
-                Header: "Action",
-                accessor: "action",
-                Cell: function ({row: {original}}) {
-                    return actionButtons(original);
-                }
+    const columns = [
+        {
+            Header: "Time In",
+            accessor: "timeIn",
+        },
+        {
+            Header: "Time Out",
+            accessor: "timeOut",
+        },
+        {
+            Header: "Site",
+            accessor: "site",
+            Cell: function ({row: {original}}) {
+                return original.site?.siteName;
             }
-        ],
-        []
-    );
+        },
+        {
+            Header: "Action",
+            accessor: "action",
+            Cell: function ({row: {original}}) {
+                return actionButtons(original);
+            }
+        }
+    ];
 
     return (
         <div>
