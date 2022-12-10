@@ -17,7 +17,7 @@ async function handler(req, res) {
 
         try {
 
-            const result = await db.collection("events").insertOne(
+            const result = await db.collection("test").insertOne(
                 {
                status: 'this is test'
             });
