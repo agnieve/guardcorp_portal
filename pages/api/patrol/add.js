@@ -6,7 +6,7 @@ async function handler(req, res) {
 
     if (req.method === 'POST') {
 
-        const {user, picture, site, date, action} = req.body;
+        const {dateTime, eventId, status} = req.body;
 
         let client;
         let db;
@@ -29,24 +29,19 @@ async function handler(req, res) {
                 throw new Error('Invalid Token');
             }
 
-            const result = await db.collection("events").insertOne(
-                {
-                user: user,
-                picture: picture,
-                site: site,
-                date: date,
-                action: action
+            const result = await db.collection("patrol").insertOne({
+                eventId, dateTime, status
             });
 
             if (!result) {
-                throw new Error('There was an error adding event');
+                throw new Error('There was an error adding patrol');
             }
 
             res.status(201).json(result);
             await client.close();
 
         } catch (error) {
-            res.status(500).json({message: error.message});
+            res.status(500).json({message: error});
             return;
         }
 

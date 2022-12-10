@@ -60,7 +60,6 @@ export const authOptions = {
                 token.role = user.role
                 // var jwt = require('jsonwebtoken');
                 // var token = jwt.sign({email: users.email, role: users.role}, process.env.NEXTAUTH_SECRET);
-                // console.log(token);
             }
 
 

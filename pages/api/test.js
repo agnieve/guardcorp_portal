@@ -1,12 +1,8 @@
-import {hashPassword} from "../../../helpers/auth-utils";
-import {connectDatabase, getAllDocuments} from "../../../helpers/db-util";
-import jwt from "jsonwebtoken";
+import {connectDatabase, getAllDocuments} from "../../helpers/db-util";
 
 async function handler(req, res) {
 
     if (req.method === 'POST') {
-
-        const {user, picture, site, date, action} = req.body;
 
         let client;
         let db;
@@ -20,22 +16,10 @@ async function handler(req, res) {
         }
 
         try {
-            const secret = process.env.NEXTAUTH_SECRET;
-            const token = req.headers.authorization.split(' ')[1];
-
-            const payload = jwt.verify(token, secret);
-
-            if (!payload) {
-                throw new Error('Invalid Token');
-            }
 
             const result = await db.collection("events").insertOne(
                 {
-                user: user,
-                picture: picture,
-                site: site,
-                date: date,
-                action: action
+               status: 'this is test'
             });
 
             if (!result) {
