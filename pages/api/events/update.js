@@ -34,7 +34,9 @@ async function handler(req, res) {
                 _id: ObjectId(eventId)
             },
                 {
-                    end: date
+                    $set: {
+                        "end": date
+                    }
                 });
 
             if (!result) {
