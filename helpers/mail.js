@@ -17,7 +17,8 @@ const senderEmail = process.env.MAIL_SENDER_EMAIL;
  * @returns 
  */
 const sendMail = (to, subject, htmlFile, htmlParams) => {
-  const filePath =  './templates/email/' + htmlFile;
+  const templatesDir = path.join(process.cwd(), "templates");
+  const filePath =  path.join(templatesDir, htmlFile);
   const source = fs.readFileSync(filePath, 'utf-8').toString();
   const template = handlebars.compile(source);
   const htmlContent = template(htmlParams);
