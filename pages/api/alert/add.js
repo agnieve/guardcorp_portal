@@ -59,7 +59,12 @@ async function handler(req, res) {
                 client.email,
                 "GuardCorp - Alert",
                 "alert-email.html",
-                { data: "test" }
+                {
+                    status: status,
+                    dateTime: dateTime,
+                    guard_name: event.user.firstName + " " + event.user.lastName,
+                    siteName: site.siteName
+                }
             );
 
             if (!result) {
