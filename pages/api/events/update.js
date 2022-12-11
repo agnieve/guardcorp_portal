@@ -1,12 +1,13 @@
 import {hashPassword} from "../../../helpers/auth-utils";
 import {connectDatabase, getAllDocuments} from "../../../helpers/db-util";
 import jwt from "jsonwebtoken";
+import {ObjectId} from "mongodb";
 
 async function handler(req, res) {
 
     if (req.method === 'POST') {
 
-        const {user, picture, site, date} = req.body;
+        const {eventId, date} = req.body;
 
         let client;
         let db;
@@ -28,21 +29,19 @@ async function handler(req, res) {
             if (!payload) {
                 throw new Error('Invalid Token');
             }
-            const data = {
-                user: user,
-                picture: picture,
-                site: site,
-                start: date,
-                end:null,
-            };
 
-            const result = await db.collection("events").insertOne(data);
+            const result = await db.collection("events").updateOne({
+                _id: ObjectId(eventId)
+            },
+                {
+                    end: date
+                });
 
             if (!result) {
                 throw new Error('There was an error adding event');
             }
 
-            res.status(201).json({...result, ...data});
+            res.status(201).json(result);
             await client.close();
 
         } catch (error) {
