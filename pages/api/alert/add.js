@@ -1,6 +1,7 @@
-import {hashPassword} from "../../../helpers/auth-utils";
-import {connectDatabase, getAllDocuments} from "../../../helpers/db-util";
+import {connectDatabase} from "../../../helpers/db-util";
 import jwt from "jsonwebtoken";
+import sendMail from "../../../helpers/mail";
+import {ObjectId} from "mongodb";
 
 async function handler(req, res) {
 
@@ -29,15 +30,34 @@ async function handler(req, res) {
                 throw new Error('Invalid Token');
             }
 
-            const result = await db.collection("patrol").insertOne({
+            const event = await db.collection("events").findOne({
+                _id: ObjectId(eventId)
+            });
+
+            const site = await db.collection("sites").findOne({
+                _id: ObjectId(event.site._id)
+            });
+
+            const client = await db.collection("clients").findOne({
+                _id: ObjectId(site.clientId)
+            });
+
+            const result = await db.collection("alert").insertOne({
                 eventId, dateTime, status
             });
 
+            const sentEmail = await sendMail(
+                client.email,
+                "GuardCorp - Alert",
+                "alert-email.html",
+                { data: "test" }
+            );
+
             if (!result) {
-                throw new Error('There was an error adding patrol');
+                throw new Error('There was an error adding alert');
             }
 
-            res.status(201).json(result);
+            res.status(201).json({result: result, emailSent: sentEmail});
             await client.close();
 
         } catch (error) {
