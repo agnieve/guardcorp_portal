@@ -17,9 +17,9 @@ module.exports = (phase, {defaultConfig}) => {
                 GOOGLE_MAP_KEY: "AIzaSyCgi4N0oldgAPrkEBsm9BET-NB_vnzzA6s",
                 MAIL_HOST: "smtp.gmail.com",
                 MAIL_PORT: "465",
-                MAIL_USER: "agnieve70@gmail.com",
-                MAIL_PASSWORD: "hzwwigctimaxvvfo",
-                MAIL_SENDER_EMAIL: "agnieve70@gmail.com"
+                MAIL_USER: "ag@castledigital.com.au",
+                MAIL_PASSWORD: "vewxiyyirkxkswpj",
+                MAIL_SENDER_EMAIL: "ag@castledigital.com.au"
             },
             images: {
                 remotePatterns: [
@@ -42,11 +42,11 @@ module.exports = (phase, {defaultConfig}) => {
             NEXTAUTH_SECRET: 'guardcorpapp',
             base_url: 'https://guardcorp-portal.vercel.app/',
             GOOGLE_MAP_KEY: "AIzaSyCgi4N0oldgAPrkEBsm9BET-NB_vnzzA6s",
-            MAIL_HOST: "smtp.sendgrid.net",
-            MAIL_PORT: "2525",
-            MAIL_USER: "apikey",
-            MAIL_PASSWORD: "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",
-            MAIL_SENDER_EMAIL: "salman@castledigital.com.au"
+            MAIL_HOST: "smtp.gmail.com",
+            MAIL_PORT: "465",
+            MAIL_USER: "ag@castledigital.com.au",
+            MAIL_PASSWORD: "vewxiyyirkxkswpj",
+            MAIL_SENDER_EMAIL: "ag@castledigital.com.au"
         },
         images: {
             remotePatterns: [
