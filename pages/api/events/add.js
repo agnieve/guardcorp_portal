@@ -28,21 +28,22 @@ async function handler(req, res) {
             if (!payload) {
                 throw new Error('Invalid Token');
             }
-
-            const result = await db.collection("events").insertOne(
-                {
+            const data = {
                 user: user,
                 picture: picture,
                 site: site,
-                date: date,
+                start: date,
+                end:null,
                 action: action
-            });
+            };
+
+            const result = await db.collection("events").insertOne(data);
 
             if (!result) {
                 throw new Error('There was an error adding event');
             }
 
-            res.status(201).json(result);
+            res.status(201).json({...result, ...data});
             await client.close();
 
         } catch (error) {
