@@ -19,8 +19,7 @@ export default function TeamMemberList(props) {
         </div>);
     }
 
-    const columns = useMemo(
-        () => [
+    const columns = [
             {
                 Header: "#",
                 accessor: "user.profilePicture",
@@ -49,9 +48,7 @@ export default function TeamMemberList(props) {
                     return actionButtons(original);
                 }
             }
-        ],
-        []
-    );
+        ];
 
     return (
         <div>
