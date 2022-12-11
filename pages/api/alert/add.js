@@ -6,7 +6,7 @@ async function handler(req, res) {
 
     if (req.method === 'POST') {
 
-        const {dateTime, eventId, notes, status} = req.body;
+        const {dateTime, eventId, status} = req.body;
 
         let client;
         let db;
@@ -30,7 +30,7 @@ async function handler(req, res) {
             }
 
             const result = await db.collection("patrol").insertOne({
-                eventId, dateTime, status, notes
+                eventId, dateTime, status
             });
 
             if (!result) {
