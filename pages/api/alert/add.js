@@ -34,13 +34,22 @@ async function handler(req, res) {
                 _id: ObjectId(eventId)
             });
 
+            console.log("Event");
+            console.log(event);
+
             const site = await db.collection("sites").findOne({
                 _id: ObjectId(event.site._id)
             });
 
+            console.log("Site");
+            console.log(site);
+
             const client = await db.collection("clients").findOne({
                 _id: ObjectId(site.clientId)
             });
+
+            console.log("Client");
+            console.log(client);
 
             const result = await db.collection("alert").insertOne({
                 eventId, dateTime, status
@@ -57,11 +66,15 @@ async function handler(req, res) {
                 throw new Error('There was an error adding alert');
             }
 
+            console.log('email sent');
+            console.log(sentEmail);
+
             res.status(201).json({result: result, emailSent: sentEmail});
             await client.close();
 
         } catch (error) {
-            res.status(500).json({message: error});
+            console.log(error);
+            res.status(500).json({message: error.message});
             return;
         }
 

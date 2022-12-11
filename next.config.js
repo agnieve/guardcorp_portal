@@ -15,11 +15,11 @@ module.exports = (phase, {defaultConfig}) => {
                 PUSHER_APP_KEY: "f09af3026c01aba188d3",
                 PUSHER_APP_SECRET: "cc57629351891b3e88dc",
                 GOOGLE_MAP_KEY: "AIzaSyCgi4N0oldgAPrkEBsm9BET-NB_vnzzA6s",
-                MAIL_HOST: "smtp.sendgrid.net",
-                MAIL_PORT: "2525",
-                MAIL_USER: "apikey",
-                MAIL_PASSWORD: "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",
-                MAIL_SENDER_EMAIL: "salman@castledigital.com.au"
+                MAIL_HOST: "smtp.gmail.com",
+                MAIL_PORT: "465",
+                MAIL_USER: "agnieve70@gmail.com",
+                MAIL_PASSWORD: "hzwwigctimaxvvfo",
+                MAIL_SENDER_EMAIL: "agnieve70@gmail.com"
             },
             images: {
                 remotePatterns: [

@@ -17,7 +17,7 @@ const senderEmail = process.env.MAIL_SENDER_EMAIL;
  * @returns 
  */
 const sendMail = (to, subject, htmlFile, htmlParams) => {
-  const filePath = process.env.APP_ROOT + '/templates/email/' + htmlFile;
+  const filePath =  './templates/email/' + htmlFile;
   const source = fs.readFileSync(filePath, 'utf-8').toString();
   const template = handlebars.compile(source);
   const htmlContent = template(htmlParams);
@@ -25,7 +25,7 @@ const sendMail = (to, subject, htmlFile, htmlParams) => {
   let transporter = nodemailer.createTransport({
     host: mailHost,
     port: mailPort,
-    secure: false, // use SSL - TLS
+    secure: true, // use SSL - TLS
     auth: {
       user: yourEmail,
       pass: yourPass,
@@ -37,6 +37,7 @@ const sendMail = (to, subject, htmlFile, htmlParams) => {
     subject: subject,
     html: htmlContent,
   };
+
   return transporter.sendMail(mailOptions); // promise
 };
 
