@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import {connectDatabase, getAllDocuments} from "../../../helpers/db-util";
+import {ObjectId} from "mongodb";
 
 
 export default async function handler(req, res) {
@@ -9,25 +10,46 @@ export default async function handler(req, res) {
     try {
         client = await connectDatabase();
     } catch (error) {
-        res.status(500).json({ message: "Connecting to the database failed" });
+        res.status(500).json({message: "Connecting to the database failed"});
         return;
     }
 
-    try{
+    try {
         const secret = process.env.NEXTAUTH_SECRET;
         const token = req.headers.authorization.split(' ')[1];
 
         const payload = jwt.verify(token, secret);
 
-        if(!payload){
+        if (!payload) {
             throw new Error('Invalid Token');
         }
 
-        const documents = await getAllDocuments(client, "incidents", { _id: -1 });
-        res.status(200).json(documents);
+        const db = client.db();
+        const alertCollection = db.collection("incidents");
 
-    }catch (error){
-        res.status(500).json({ message: error});
+        const document = await alertCollection.aggregate([{
+            $lookup: {
+                from: 'events',
+                localField: 'objectId(eventId)',
+                foreignField: 'c',
+                let: {
+                    eventId: "eventId",
+                    event: "$_id"
+                },
+                as: 'eventDetails',
+                pipeline: [
+                    {
+                        "$limit": 1
+                    }
+                ]
+            },
+
+        }]).toArray();
+
+        res.status(200).json(document);
+
+    } catch (error) {
+        res.status(500).json({message: error.message});
         return;
     }
 }

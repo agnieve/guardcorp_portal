@@ -5,30 +5,38 @@ import BreadCrumb from "../../components/ui/breadcrumb";
 import {FlagIcon} from "@heroicons/react/24/solid";
 import Table from "../../components/ui/table";
 import {useMemo} from "react";
+import {useQuery} from "@tanstack/react-query";
+import {getAllAlerts} from "../../helpers/api-utils/alerts";
+import {getAllIncidents} from "../../helpers/api-utils/incidents";
+import Loader from "../../components/ui/loader";
 
-export default function Events(){
+export default function Events(props){
 
+    const { session } = props.pageProps;
 
-    const data =[];
+    const {isLoading, isError, data, error} = useQuery({
+        queryKey: ['clients'],
+        queryFn: getAllIncidents.bind(this, session.user.accessToken),
+    });
 
-    const columns = useMemo(
-        () => [
+    const columns = [
             {
-                Header: 'Date',
+                Header: 'Date/Time',
                 accessor: 'date',
             },
             {
-                Header: "Time",
-                accessor: "time",
-            },
-
-            {
-                Header: 'Site',
-                accessor: 'site',
+                Header: "Site",
+                accessor: "site",
+                Cell: function ({row: {original}}) {
+                    return original.eventDetails[0].site.siteName;
+                }
             },
             {
-                Header: 'Team Member',
-                accessor: 'teamMember',
+                Header: "Team Member",
+                accessor: "teamMember",
+                Cell: function ({row: {original}}) {
+                    return original.eventDetails[0].user.firstName + " " + original.eventDetails[0].user.lastName;
+                }
             },
             {
                 Header: 'Type',
@@ -36,12 +44,14 @@ export default function Events(){
             },
             {
                 Header: 'Note/Description',
-                accessor: 'description',
+                accessor: 'notes',
             },
 
-        ],
-        []
-    );
+        ];
+
+    if (isLoading) {
+        return <Loader />
+    }
 
     return(
         <div className={''}>

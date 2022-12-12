@@ -3,33 +3,43 @@ import {BellAlertIcon} from "@heroicons/react/24/solid";
 import BreadCrumb from "../../components/ui/breadcrumb";
 import Table from "../../components/ui/table";
 import {useMemo} from "react";
+import {useQuery} from "@tanstack/react-query";
+import Loader from "../../components/ui/loader";
+import {getAllAlerts} from "../../helpers/api-utils/alerts";
 
-export default function Alerts() {
+export default function Alerts(props) {
 
-    const data =[];
 
-    const columns = useMemo(
-        () => [
+    const { session } = props.pageProps;
+
+    const {isLoading, isError, data, error} = useQuery({
+        queryKey: ['clients'],
+        queryFn: getAllAlerts.bind(this, session.user.accessToken),
+    });
+
+    const columns =  [
             {
-                Header: 'Date',
-                accessor: 'date',
+                Header: 'Date/Time',
+                accessor: 'dateTime',
             },
-            {
-                Header: "Time",
-                accessor: "time",
-            },
+           
             {
                 Header: 'Alert Type',
-                accessor: 'alertType',
+                accessor: 'status',
             },
             {
-                Header: 'Team Member',
-                accessor: 'teamMember',
-            },
+                Header: "Team Member",
+                accessor: "action",
+                Cell: function ({row: {original}}) {
+                    return original.eventDetails[0].user.firstName + " " + original.eventDetails[0].user.lastName;
+                }
+            }
 
-        ],
-        []
-    );
+        ];
+
+    if (isLoading) {
+        return <Loader />
+    }
 
     return (
         <div className={''}>
@@ -38,7 +48,7 @@ export default function Alerts() {
                 toolTip={<BellAlertIcon className="h-6 w-6 text-slate-500"/>}
             />
 
-            <Table columns={columns} apiResult={data} hiddenColumns={["lastName"]} />
+            <Table columns={columns} apiResult={data} />
         </div>
     )
 }
