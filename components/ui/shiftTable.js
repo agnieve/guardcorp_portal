@@ -3,63 +3,43 @@
 import React, {useEffect, useState} from "react";
 import { useTable, usePagination, useRowSelect, useSortBy } from "react-table";
 import {ChevronDownIcon, ChevronUpIcon} from '@heroicons/react/24/solid';
-
-const IndeterminateCheckbox = React.forwardRef(
-  ({ indeterminate, ...rest }, ref) => {
-    const defaultRef = React.useRef();
-    const resolvedRef = ref || defaultRef;
-
-    React.useEffect(() => {
-      resolvedRef.current.indeterminate = indeterminate;
-    }, [resolvedRef, indeterminate]);
-
-    return (
-      <div className="">
-        <input
-          className="rounded-md p-2"
-          type="checkbox"
-          ref={resolvedRef}
-          {...rest}
-        />
-      </div>
-    );
-  }
-);
+import {useRouter} from 'next/router';
 
 function Table({ columns, apiResult, hiddenColumns = []}) {
   const data = apiResult;
+  const router = useRouter();
 
   const tableInstance = useTable({
-      columns,
-      data,
-      initialState: { pageIndex: 0, hiddenColumns: hiddenColumns },
-    },
-    useSortBy,
-    usePagination,
-    useRowSelect,
-    (hooks) => {
-      hooks.visibleColumns.push((columns) => [
-        // Let's make a column for selection
-        // {
-        //   id: "selection",
-        //   // The header can use the table's getToggleAllRowsSelectedProps method
-        //   // to render a checkbox
-        //   Header: ({ getToggleAllRowsSelectedProps }) => (
-        //     <div className="">
-        //       <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-        //     </div>
-        //   ),
-        //   // The cell can use the individual row's getToggleRowSelectedProps method
-        //   // to the render a checkbox
-        //   Cell: ({ row }) => (
-        //     <div className="">
-        //       <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-        //     </div>
-        //   ),
-        // },
-        ...columns,
-      ]);
-    }
+        columns,
+        data,
+        initialState: { pageIndex: 0, hiddenColumns: hiddenColumns },
+      },
+      useSortBy,
+      usePagination,
+      useRowSelect,
+      (hooks) => {
+        hooks.visibleColumns.push((columns) => [
+          // Let's make a column for selection
+          // {
+          //   id: "selection",
+          //   // The header can use the table's getToggleAllRowsSelectedProps method
+          //   // to render a checkbox
+          //   Header: ({ getToggleAllRowsSelectedProps }) => (
+          //     <div className="">
+          //       <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+          //     </div>
+          //   ),
+          //   // The cell can use the individual row's getToggleRowSelectedProps method
+          //   // to the render a checkbox
+          //   Cell: ({ row }) => (
+          //     <div className="">
+          //       <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+          //     </div>
+          //   ),
+          // },
+          ...columns,
+        ]);
+      }
   );
 
   const {
@@ -67,8 +47,8 @@ function Table({ columns, apiResult, hiddenColumns = []}) {
     getTableBodyProps,
     headerGroups,
     prepareRow,
-      selectedFlatRows,
-      page, // Instead of using 'rows', we'll use page,
+    selectedFlatRows,
+    page, // Instead of using 'rows', we'll use page,
     // which has only the rows for the active page
 
     // The rest of these things are super handy, too ;)
@@ -82,6 +62,17 @@ function Table({ columns, apiResult, hiddenColumns = []}) {
     setPageSize,
     state: { pageIndex, pageSize },
   } = tableInstance;
+
+  useEffect(()=> {
+    console.log('use effect triggered!');
+    console.log(selectedFlatRows);
+    if(selectedFlatRows.length > 0){
+      const d = selectedFlatRows[0]?.original;
+
+      router.push(`/shifts/${d?._id}?title=${d?.site.siteName} (${d?.timeIn} - ${d?.timeOut})`)
+    }
+  },[selectedFlatRows]);
+
 
   return (
     <div>
@@ -140,12 +131,23 @@ function Table({ columns, apiResult, hiddenColumns = []}) {
             prepareRow(row);
             return (
               <tr
-                className={`${index % 2 == 0 ? "bg-white" : "bg-slate-100"} `}
+                className={`${index % 2 == 0 ? "bg-white" : "bg-slate-100"} cursor-pointer hover:bg-slate-300`}
                 {...row.getRowProps()}
               >
                 {row.cells?.map((cell, index) => {
+
+                  if(index === 4){
+                    return (
+                        <td className={`py-4 px-3 `} {...cell.getCellProps()}>
+                          {cell.render("Cell")}
+                        </td>
+                    );
+                  }
+
                   return (
-                    <td className={`py-4 px-3 `} {...cell.getCellProps()}>
+                    <td onClick={()=> {
+                      row.toggleRowSelected();
+                    }} className={`py-4 px-3 `} {...cell.getCellProps()}>
                       {cell.render("Cell")}
                     </td>
                   );
@@ -155,19 +157,6 @@ function Table({ columns, apiResult, hiddenColumns = []}) {
           })}
         </tbody>
       </table>
-      {/*  <pre>*/}
-      {/*  <code>*/}
-      {/*    {JSON.stringify(*/}
-      {/*        {*/}
-      {/*            'selectedFlatRows[].original': selectedFlatRows.map(*/}
-      {/*                d => d.original*/}
-      {/*            ),*/}
-      {/*        },*/}
-      {/*        null,*/}
-      {/*        2*/}
-      {/*    )}*/}
-      {/*  </code>*/}
-      {/*</pre>*/}
 
       {/* <div className="pagination flex items-center justify-center mt-5">
         <div className="flex justify-between items-center w-full px-20">

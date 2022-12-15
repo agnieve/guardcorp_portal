@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 async function handler(req, res) {
 
     if (req.method === 'POST') {
-        const {email, name, address, mobilePhone} = req.body;
+        const {email, name, contactName, address, mobilePhone} = req.body;
 
         if (!email || !email.includes('@')) {
             res.status(422).json({message: 'Invalid Input - password should also be at least 7 characters long.'});
@@ -46,6 +46,7 @@ async function handler(req, res) {
                 address: address,
                 mobilePhone: mobilePhone,
                 name: name,
+                contactName: contactName,
             });
 
             if (!result) {

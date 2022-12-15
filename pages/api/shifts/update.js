@@ -5,9 +5,10 @@ import {ObjectId} from "mongodb";
 
 async function handler(req, res) {
 
-    if (req.method === 'POST') {
+    if (req.method === 'PUT') {
 
         const {timeIn, timeOut, siteId, hTimeIn, hTimeOut} = req.body;
+        const {id} = req.query;
 
         let client;
         let db;
@@ -40,14 +41,20 @@ async function handler(req, res) {
 
             const selectedClient = await db.collection('clients').findOne({_id: ObjectId(selectedSite.clientId)});
 
-            const result = await db.collection("shifts").insertOne({
-                timeIn, timeOut, site: {
-                    _id: selectedSite._id,
-                    siteName:selectedSite.siteName,
+            const result = await db.collection("shifts").updateOne({
+                    _id: ObjectId(id)
                 },
-                client: selectedClient,
-                hTimeIn, hTimeOut
-            });
+                {
+                    $set: {
+                        timeIn, timeOut, site: {
+                            _id: selectedSite._id,
+                            siteName: selectedSite.siteName,
+                        },
+                        client: selectedClient,
+                        hTimeIn, hTimeOut
+                    }
+
+                });
 
             if (!result) {
                 throw new Error('There was an error adding shift');
@@ -57,7 +64,7 @@ async function handler(req, res) {
             await client.close();
 
         } catch (error) {
-            res.status(500).json({message: error});
+            res.status(500).json({message: error.message});
             return;
         }
 

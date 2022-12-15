@@ -30,6 +30,7 @@ export default function Users(props) {
         company: '',
         role: '',
         licenseNumber: '',
+        licenseExpireDate:'',
         profilePicture: '',
     });
 
@@ -57,6 +58,7 @@ export default function Users(props) {
             company: '',
             role: '',
             licenseNumber: '',
+            licenseExpireDate:'',
             profilePicture:''
         });
     }

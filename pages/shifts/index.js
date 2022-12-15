@@ -1,7 +1,7 @@
 'use client';
 
 import {getSession} from "next-auth/react";
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import BreadCrumb from "../../components/ui/breadcrumb";
 import {CalendarDaysIcon} from "@heroicons/react/24/solid";
 import List from "../../components/shifts/list";
@@ -12,10 +12,12 @@ import Loader from "../../components/ui/loader";
 import {getAllSites} from "../../helpers/api-utils/sites";
 import AddMember from "../../components/shifts/add-member";
 import Select from "react-dropdown-select";
+import {useRouter} from "next/navigation";
 
 export default function Shifts(props) {
 
     const {session} = props.pageProps;
+    const router = useRouter();
 
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({
@@ -55,7 +57,7 @@ export default function Shifts(props) {
     return (
         <div className={''}>
             <BreadCrumb
-                headerTitle={'Shifts'}
+                headerTitle={'Jobs'}
                 toolTip={<button onClick={() => {
                     modalToggleHandler();
                     setAction('add');

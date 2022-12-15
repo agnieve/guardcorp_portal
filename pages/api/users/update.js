@@ -6,7 +6,7 @@ import {ObjectId} from "mongodb";
 async function handler(req, res) {
 
     if (req.method === 'PUT') {
-        const {email, firstName, lastName, mobilePhone,profilePicture, licenseNumber, role} = req.body;
+        const {email, firstName, lastName, mobilePhone,profilePicture, licenseNumber,  licenseExpireDate, role} = req.body;
         const { id } = req.query;
 
         let client;
@@ -40,6 +40,7 @@ async function handler(req, res) {
                     mobilePhone : mobilePhone,
                     role : role,
                     licenseNumber: licenseNumber,
+                    licenseExpireDate:licenseExpireDate,
                     profilePicture:profilePicture,
                     fullName: `${firstName} ${lastName}`
                 }
@@ -56,6 +57,7 @@ async function handler(req, res) {
                         mobilePhone : mobilePhone,
                         role : role,
                         licenseNumber: licenseNumber,
+                        licenseExpireDate:licenseExpireDate,
                         profilePicture:profilePicture,
                         fullName: `${firstName} ${lastName}`
                     }

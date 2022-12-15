@@ -6,7 +6,7 @@ import {ObjectId} from "mongodb";
 async function handler(req, res) {
 
     if (req.method === 'PUT') {
-        const {email, name, address, mobilePhone} = req.body;
+        const {email, name, contactName, address, mobilePhone} = req.body;
         const { id } = req.query;
 
         let client;
@@ -38,6 +38,7 @@ async function handler(req, res) {
                     name : name,
                     address : address,
                     mobilePhone : mobilePhone,
+                    contactName: contactName
                 }
             });
 

@@ -47,10 +47,13 @@ export default function ClientList(props) {
 
     const columns = [
         {
-            Header: "Name",
+            Header: "Company Name",
             accessor: "name",
         },
-
+        {
+            Header: "Contact Name",
+            accessor: "contactName",
+        },
         {
             Header: 'Email',
             accessor: 'email',

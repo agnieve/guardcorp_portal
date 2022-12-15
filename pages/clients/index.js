@@ -21,6 +21,7 @@ export default function Clients(props){
 
     const [form, setForm] = useState({
         name: '',
+        contactName:'',
         address: '',
         email: '',
         mobilePhone: '',
@@ -38,6 +39,7 @@ export default function Clients(props){
     function clearFields(){
         setForm({
             name: '',
+            contactName:'',
             address: '',
             email: '',
             mobilePhone: '',

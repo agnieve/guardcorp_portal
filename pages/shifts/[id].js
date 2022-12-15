@@ -6,48 +6,34 @@ import BreadCrumb from "../../components/ui/breadcrumb";
 import ShiftDetailList from "../../components/shifts/shift-detail-list";
 import Link from "next/link";
 import {useRouter} from "next/router";
+import {useQuery} from "@tanstack/react-query";
+import {getAllShifts} from "../../helpers/api-utils/shifts";
+import Loader from "../../components/ui/loader";
+import {getAllEvents} from "../../helpers/api-utils/events";
 
 
 export default function ShiftDetails(props) {
 
+    const {session} = props.pageProps;
+
     const router = useRouter()
     const {id, title} = router.query;
 
+    const {isFetching, data, error} = useQuery({
+        queryKey: ['shifts'],
+        queryFn: getAllEvents.bind(id, this, session.user.accessToken),
+    });
 
-    const data = [{
-        _id: 1,
-        date: '11/16/2022',
-        presentMembers: [
-            {
-                _id: 1,
-                name: 'AG',
-                timeIn: '7:40'
-            },
-            {
-                _id: 2,
-                name: 'John',
-                timeIn: '7:30'
-            }
-        ]
-    },
-        {
-            _id: 2,
-            date: '11/17/2022',
-            presentMembers: [
-                {
-                    _id: 1,
-                    name: 'AG',
-                    timeIn: '7:40'
-                },
-            ]
-        }];
+    if (isFetching) {
+        return <Loader />
+    }
 
     return (
         <div>
             <BreadCrumb
                 headerTitle={
                     <>
-                        <Link className={'no-underline text-slate-700 hover:font-medium'} href={'/shifts'}>Shifts</Link>
+                        <Link className={'no-underline text-slate-700 hover:font-medium'} href={'/shifts'}>Jobs</Link>
                         <span className={'text-slate-400'}>/{title}</span>
                     </>
                 }

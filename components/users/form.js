@@ -131,13 +131,24 @@ export default function UserForm(props) {
                             />) : null
                 }
                 {form.role === 'guard' &&
-                    <Input
-                        label={'License Number'}
-                        name={'licenseNumber'}
-                        value={form['licenseNumber']}
-                        withButton={true}
-                        setValue={(e) => setValueHandler('licenseNumber', e.target.value)}
-                    />}
+                    <>
+                        <Input
+                            label={'License Number'}
+                            name={'licenseNumber'}
+                            value={form['licenseNumber']}
+                            withButton={true}
+                            setValue={(e) => setValueHandler('licenseNumber', e.target.value)}
+                        />
+                        <Input
+                            label={'License Expires'}
+                            name={'licenseExpireDate'}
+                            value={form['licenseExpireDate']}
+                            type={'date'}
+                            withButton={true}
+                            setValue={(e) => setValueHandler('licenseExpireDate', e.target.value)}
+                        />
+                    </>
+                }
                 <div>
                     <select value={form.role} onChange={(e) => setValueHandler('role', e.target.value)}
                             className={'w-full py-2 border-b border-slate-400 focus:outline-none'}>

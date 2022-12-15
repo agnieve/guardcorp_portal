@@ -43,7 +43,7 @@ export default function ShiftMembers(props) {
             <BreadCrumb
                 headerTitle={
                     <>
-                        <Link className={'no-underline text-slate-700 hover:font-medium'} href={'/shifts'}>Shifts</Link>
+                        <Link className={'no-underline text-slate-700 hover:font-medium'} href={'/shifts'}>Jobs</Link>
                         <span className={'text-slate-400'}>/{title}</span>
                     </>
                 }

@@ -15,10 +15,11 @@ const MyDocument = () => (
     <Document>
         <Page size="A4" style={styles.page}>
             <Image style={{zIndex:'-20', position:'absolute', top:0, right:0, width: '100%', height:100}} alt={'header image'} src={'http://localhost:3000/header.png'} />
-            <Text style={{textAlign: 'right', marginTop: 30, marginRight:30, fontSize: 12}}>Gaisano Mall (Site Name)</Text>
+            <Text style={{textAlign: 'right', marginTop: 30, marginRight:30, fontSize: 12}}>Gaisano Mall (Client Name)</Text>
             <Text style={{textAlign: 'right', fontSize:10, marginRight:30}}>11/16/2022</Text>
             <Text style={{textAlign: 'right', fontSize:10, marginRight:30}}>7:30 - 15:30</Text>
             <View style={{marginTop: 70, marginHorizontal: 25}}>
+                <Text style={{textAlign:'center'}}>Shift Report</Text>
                 <View style={styles.section}>
                     <Text style={{fontSize:12}}>Team Members</Text>
                     <View style={{justifyContent:'space-between', flexDirection:"row"}}>
@@ -39,7 +40,7 @@ const MyDocument = () => (
                     </View>
                 </View>
                 <View style={styles.section}>
-                    <Text style={{fontSize:12}}>Activities</Text>
+                    <Text style={{fontSize:12}}>Activity Log</Text>
                     <View style={{justifyContent:'space-between', flexDirection:"row"}}>
                         <Text style={{fontSize:10, width:'40%', padding: 2}}>Time</Text>
                         <Text style={{fontSize:10, width:'40%', padding: 2}}>Type of Activity</Text>
@@ -67,23 +68,14 @@ const MyDocument = () => (
                         <Text style={{fontSize:10, width:'20%', padding: 2}}>John Doe</Text>
                     </View>
                 </View>
-                <View style={styles.section}>
-                    <Text style={{fontSize:12}}>Alerts</Text>
-                    <View style={{justifyContent:'space-between', flexDirection:"row"}}>
-                        <Text style={{fontSize:10, width:'40%', padding: 2}}>Time</Text>
-                        <Text style={{fontSize:10, width:'40%', padding: 2}}>Type of Alert</Text>
-                        <Text style={{fontSize:10, width:'20%', padding: 2}}>Member</Text>
-                    </View>
-                    <View style={{height:1, width:'100%', backgroundColor:'grey', marginBottom:5}}></View>
-                    <Text style={{fontSize:10, width:'20%', padding: 2}}>No Alert</Text>
-                </View>
+
                 <View style={styles.section}>
                     <Text style={{fontSize:12}}>Events/Incidents</Text>
                     <View style={{justifyContent:'space-between', flexDirection:"row"}}>
                         <Text style={{fontSize:10, width:'20%', padding: 2}}>Time</Text>
                         <Text style={{fontSize:10, width:'20%', padding: 2}}>Type of Incident</Text>
-                        <Text style={{fontSize:10, width:'30%', padding: 2}}>Member</Text>
-                        <Text style={{fontSize:10, width:'30%', padding: 2}}>Content</Text>
+                        <Text style={{fontSize:10, width:'30%', padding: 2}}>Team</Text>
+                        <Text style={{fontSize:10, width:'30%', padding: 2}}>Detail</Text>
                     </View>
                     <View style={{height:1, width:'100%', backgroundColor:'grey', marginBottom:5}}></View>
                     <Text style={{fontSize:10, width:'20%', padding: 2}}>No Event/Incident</Text>
@@ -96,7 +88,9 @@ const MyDocument = () => (
 );
 
 export async function downloadDocument() {
-    const blob = await ReactPDF.pdf(<MyDocument/>).toBlob();
+    const blob = await ReactPDF.pdf(<MyDocument
+
+    />).toBlob();
     const url = URL.createObjectURL(blob);
 
     const a = document.createElement('a');

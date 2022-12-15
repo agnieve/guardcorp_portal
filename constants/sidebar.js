@@ -49,7 +49,7 @@ export const sidebarContent = [
                 icon: <BuildingOfficeIcon className="h-6 w-6 text-white"/>
             },
             {
-                label: 'Shifts',
+                label: 'Jobs',
                 link: '/shifts',
                 icon: <ClipboardDocumentListIcon className="h-6 w-6 text-white"/>
             },

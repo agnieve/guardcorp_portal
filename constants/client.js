@@ -1,7 +1,12 @@
 export const formSettings = [
     {
-        label: 'Name',
+        label: 'Company Name',
         name: 'name',
+        type: 'text',
+    },
+    {
+        label: 'Contact Name',
+        name: 'contactName',
         type: 'text',
     },
     {

@@ -40,11 +40,11 @@ export default function ShiftDetailList(props) {
             accessor: "date",
         },
         {
-            Header: "Members Active",
+            Header: "Team Members",
             accessor: "membersActive",
             Cell: function ({row: {original}}) {
                 return <ul>
-                    {original.presentMembers.map(present => <li key={present._id}>{present.name} - {present.timeIn}</li>)}
+                    {original.user.firstName} {original.user.lastName}
                 </ul>
             }
         },
