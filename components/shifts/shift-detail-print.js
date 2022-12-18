@@ -29,7 +29,7 @@ const MyDocument = ({data}) => {
                     textAlign: 'right',
                     marginTop: 30,
                     marginRight: 30,
-                    fontSize: 12
+                    fontSize: 10
                 }}>{data?.client?.name}</Text>
                 <Text style={{textAlign: 'right', fontSize: 10, marginRight: 30}}>{data?.event?.site.siteName}</Text>
                 <Text style={{textAlign: 'right', fontSize: 10, marginRight: 30}}>{dateShift}</Text>
