@@ -30,7 +30,8 @@ const MyDocument = ({data}) => {
                     marginTop: 30,
                     marginRight: 30,
                     fontSize: 12
-                }}>{data?.event?.site.siteName}</Text>
+                }}>{data?.client?.name}</Text>
+                <Text style={{textAlign: 'right', fontSize: 10, marginRight: 30}}>{data?.event?.site.siteName}</Text>
                 <Text style={{textAlign: 'right', fontSize: 10, marginRight: 30}}>{dateShift}</Text>
                 <Text style={{textAlign: 'right', fontSize: 10, marginRight: 30}}>{start} - {end}</Text>
                 <View style={{marginTop: 70, marginHorizontal: 25}}>
@@ -44,13 +45,13 @@ const MyDocument = ({data}) => {
                         </View>
                         <View style={{height: 1, width: '100%', backgroundColor: 'grey', marginBottom: 5}}></View>
                         <View style={{justifyContent: 'space-between', flexDirection: "row"}}>
-                            <Text style={{fontSize: 10, width: '40%', padding: 2}}>{data?.event?.user.fullName}</Text>
-                            <Text style={{fontSize: 10, width: '40%', padding: 2}}>{data?.event?.user.email}</Text>
+                            <Text style={{fontSize: 10, width: '40%', padding: 2}}>{data?.event?.user?.fullName}</Text>
+                            <Text style={{fontSize: 10, width: '40%', padding: 2}}>{data?.event?.user?.email}</Text>
                             <Text style={{
                                 fontSize: 10,
                                 width: '20%',
                                 padding: 2
-                            }}>{data?.event?.user.licenseNumber}</Text>
+                            }}>{data?.event?.user?.licenseNumber}</Text>
                         </View>
                     </View>
                     <View style={styles.section}>
@@ -65,7 +66,7 @@ const MyDocument = ({data}) => {
                             data?.inspections?.map((inspection, index) =>  <View key={index} style={{justifyContent: 'space-between', flexDirection: "row"}}>
                                 <Text style={{fontSize: 10, width: '40%', padding: 2}}>{new Date(inspection.date).toLocaleTimeString()}</Text>
                                 <Text style={{fontSize: 10, width: '40%', padding: 2}}>{inspection.type}</Text>
-                                <Text style={{fontSize: 10, width: '20%', padding: 2}}>{data?.event?.user.fullName}</Text>
+                                <Text style={{fontSize: 10, width: '20%', padding: 2}}>{data?.event?.user?.fullName}</Text>
                             </View> )
                         }
 
@@ -97,7 +98,7 @@ const MyDocument = ({data}) => {
                             data?.incidents?.map((incidents, index) =>  <View key={index} style={{justifyContent: 'space-between', flexDirection: "row"}}>
                                 <Text style={{fontSize: 10, width: '40%', padding: 2}}>{new Date(incidents.date).toLocaleTimeString()}</Text>
                                 <Text style={{fontSize: 10, width: '40%', padding: 2}}>{incidents.type}</Text>
-                                <Text style={{fontSize: 10, width: '20%', padding: 2}}>{data?.event?.user.fullName}</Text>
+                                <Text style={{fontSize: 10, width: '20%', padding: 2}}>{data?.event?.user?.fullName}</Text>
                                 <Text style={{fontSize: 10, width: '40%', padding: 2}}>{incidents.notes}</Text>
                             </View> )
                         }

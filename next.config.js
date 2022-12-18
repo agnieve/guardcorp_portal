@@ -54,6 +54,10 @@ module.exports = (phase, {defaultConfig}) => {
                     protocol: 'https',
                     hostname: 'i.ibb.co',
                 },
+                {
+                    protocol: 'https',
+                    hostname: 'expo.dev',
+                },
             ],
         },
     };
