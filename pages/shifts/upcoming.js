@@ -36,8 +36,8 @@ export default function Upcoming(props){
             Cell: function ({row: {original}}) {
                 console.log(original.teamMembers);
 
-               return  original.teamMembers.map(member =>
-                   <div className={'mb-2'}>
+               return  original.teamMembers.map((member, index) =>
+                   <div key={index} className={'mb-2'}>
                         <p>{member.name}</p>
                         <span>Time In: {member.timeIn}</span> <br />
                         <span>Time Out: {member.timeOut}</span>
@@ -75,8 +75,8 @@ export default function Upcoming(props){
                 headerTitle={'Upcoming Shifts/Client 5, teessass, (05:46 - 16:46)'}
                 toolTip={<>
                     <select className={'mr-3 border-b border-solid rounded'}>
-                        <option>Upcoming Shifts</option>
-                        <option>Archived Shifts</option>
+                        <option key={'upcoming shifts'}>Upcoming Shifts</option>
+                        <option key={'archived shifts'}>Archived Shifts</option>
                     </select>
                     <DocumentIcon className="h-6 w-6 text-slate-500"/>
                 </>}
