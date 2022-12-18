@@ -39,12 +39,12 @@ export default async function handler(req, res) {
                 as: 'eventDetails',
                 pipeline: [
                     {
-                        "$sort": {_id: 1},
                         "$limit": 1
                     }
                 ]
             },
-        }]).toArray();
+
+        }, {"$sort": {"_id": -1}}]).toArray();
 
         res.status(200).json(document);
 
