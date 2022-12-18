@@ -23,7 +23,7 @@ export default function ReportDownload(props) {
         (async () => {
             await refetch();
             console.log(data);
-            if(!data || !data.message){
+            if(data || !data.message){
                 await downloadDocument(data);
             }
         })();
