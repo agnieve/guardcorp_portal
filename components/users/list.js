@@ -19,6 +19,7 @@ export default function UserList(props){
                         mobilePhone: original.mobilePhone,
                         role: original.role,
                         licenseNumber: original.licenseNumber,
+                        licenseExpireDate: original.licenseExpireDate,
                         profilePicture: original.profilePicture,
                     };
                     return formState;

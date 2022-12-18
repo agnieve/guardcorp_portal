@@ -37,6 +37,14 @@ export default async function handler(req, res) {
                 throw new Error("No user found!");
             }
 
+            var day1 = new Date("08/25/2020");
+            var day2 = new Date(user.licenseExpire);
+
+            var difference= Math.abs(day2-day1);
+            const days = difference/(1000 * 3600 * 24)
+
+            console.log(days)
+
             await client.close();
 
             const secret = process.env.NEXTAUTH_SECRET;
@@ -45,6 +53,7 @@ export default async function handler(req, res) {
 
             res.status(200).json({...user, ...{token: token}});
             return
+
 
         } catch (error) {
             res.status(500).json({message: error.message});
