@@ -72,7 +72,7 @@ const MyDocument = ({data}) => {
                         {
                             data?.patrol?.map((patrol, index) =>
                             {
-                                if(patrol.status === 'START'){
+                                if(patrol.status === 'END'){
                                     return (<View key={index} style={{justifyContent: 'space-between', flexDirection: "row"}}>
                                         <Text style={{fontSize: 10, width: '40%', padding: 2}}>{new Date(patrol.dateTime).toLocaleTimeString()}</Text>
                                         <Text style={{fontSize: 10, width: '40%', padding: 2}}>{patrol.type}</Text>
