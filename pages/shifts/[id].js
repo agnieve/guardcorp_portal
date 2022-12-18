@@ -10,6 +10,8 @@ import {useQuery} from "@tanstack/react-query";
 import {getAllShifts} from "../../helpers/api-utils/shifts";
 import Loader from "../../components/ui/loader";
 import {getAllEvents} from "../../helpers/api-utils/events";
+import {useState} from "react";
+import UpcomingComp from "../../components/shifts/upcoming";
 
 
 export default function ShiftDetails(props) {
@@ -18,6 +20,8 @@ export default function ShiftDetails(props) {
 
     const router = useRouter()
     const {id, title} = router.query;
+
+    const [tableType, setTableType] = useState("");
 
     const {isFetching, data, error} = useQuery({
         queryKey: ['shifts'],
@@ -39,14 +43,19 @@ export default function ShiftDetails(props) {
                 }
                 toolTip={
                 <>
-                    <select className={'mr-3 border-b border-solid rounded'}>
-                        <option key={'archived shifts'}>Archived Shifts</option>
-                        <option key={'upcoming shifts'}>Upcoming Shifts</option>
+                    <select value={tableType} onChange={(e)=> {
+                        setTableType(e.target.value);
+                    }
+                    } className={'mr-3 border-b border-solid rounded'}>
+                        <option value={'Archived Shifts'} key={'archived shifts'}>Archived Shifts</option>
+                        <option value={'Upcoming Shifts'} key={'upcoming shifts'}>Upcoming Shifts</option>
                     </select>
                     <DocumentIcon className="h-6 w-6 text-slate-500"/>
                 </>}
             />
-            <ShiftDetailList data={data}/>
+            {
+                tableType === 'Upcoming Shifts' ?<UpcomingComp /> :  <ShiftDetailList data={data}/>
+            }
         </div>
     )
 }
