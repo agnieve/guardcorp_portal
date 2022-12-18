@@ -63,15 +63,15 @@ function Table({ columns, apiResult, hiddenColumns = []}) {
     state: { pageIndex, pageSize },
   } = tableInstance;
 
-  useEffect(()=> {
-    console.log('use effect triggered!');
-    console.log(selectedFlatRows);
-    if(selectedFlatRows.length > 0){
-      const d = selectedFlatRows[0]?.original;
-
-      router.push(`/shifts/${d?._id}?title=${d?.site.siteName} (${d?.timeIn} - ${d?.timeOut})`)
-    }
-  },[selectedFlatRows]);
+  // useEffect(()=> {
+  //   console.log('use effect triggered!');
+  //   console.log(selectedFlatRows);
+  //   if(selectedFlatRows.length > 0){
+  //     const d = selectedFlatRows[0]?.original;
+  //
+  //     router.push(`/shifts/${d?._id}?title=${d?.site.siteName} (${d?.timeIn} - ${d?.timeOut})`)
+  //   }
+  // },[selectedFlatRows]);
 
 
   return (

@@ -6,6 +6,7 @@ import Image from "next/image";
 import {useQuery} from "@tanstack/react-query";
 import Loader from "../../components/ui/loader";
 import {getEvent} from "../../helpers/api-utils/events";
+import {useEffect, useState} from "react";
 
 
 export default function ReportDownload(props) {
@@ -13,15 +14,19 @@ export default function ReportDownload(props) {
     const router = useRouter()
     const {id} = router.query;
 
-    if (!id) {
-        return <Loader/>
-    }
-    const {isLoading, isError, data, error} = useQuery({
+    const {isLoading, refetch, data, error} = useQuery({
         queryKey: ['report'],
         queryFn: getEvent.bind(this, id),
+        enabled: false
     });
 
-    if (isLoading) {
+    if(router.isReady){
+        (async () => {
+            await refetch();
+        })();
+    }
+
+    if (isLoading && !router.isReady) {
         return <Loader/>
     }
 

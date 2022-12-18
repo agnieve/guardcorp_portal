@@ -62,7 +62,7 @@ const MyDocument = ({data}) => {
                         </View>
                         <View style={{height: 1, width: '100%', backgroundColor: 'grey', marginBottom: 5}}></View>
                         {
-                            data?.inspections.map(inspection =>  <View style={{justifyContent: 'space-between', flexDirection: "row"}}>
+                            data?.inspections.map((inspection, index) =>  <View key={index} style={{justifyContent: 'space-between', flexDirection: "row"}}>
                                 <Text style={{fontSize: 10, width: '40%', padding: 2}}>{new Date(inspection.date).toLocaleTimeString()}</Text>
                                 <Text style={{fontSize: 10, width: '40%', padding: 2}}>{inspection.type}</Text>
                                 <Text style={{fontSize: 10, width: '20%', padding: 2}}>{data?.event?.user.fullName}</Text>
@@ -70,7 +70,8 @@ const MyDocument = ({data}) => {
                         }
 
                         {
-                            data?.patrol.map(inspection =>  <View style={{justifyContent: 'space-between', flexDirection: "row"}}>
+                            data?.patrol.map((inspection, index) =>
+                                <View key={index} style={{justifyContent: 'space-between', flexDirection: "row"}}>
                                 <Text style={{fontSize: 10, width: '40%', padding: 2}}>{new Date(inspection.dateTime).toLocaleTimeString()}</Text>
                                 <Text style={{fontSize: 10, width: '40%', padding: 2}}>{inspection.type}</Text>
                                 <Text style={{fontSize: 10, width: '20%', padding: 2}}>{data?.event?.user.fullName}</Text>
@@ -89,7 +90,7 @@ const MyDocument = ({data}) => {
                         </View>
                         <View style={{height: 1, width: '100%', backgroundColor: 'grey', marginBottom: 5}}></View>
                         {
-                            data?.incidents.map(incidents =>  <View style={{justifyContent: 'space-between', flexDirection: "row"}}>
+                            data?.incidents.map((incidents, index) =>  <View key={index} style={{justifyContent: 'space-between', flexDirection: "row"}}>
                                 <Text style={{fontSize: 10, width: '40%', padding: 2}}>{new Date(incidents.date).toLocaleTimeString()}</Text>
                                 <Text style={{fontSize: 10, width: '40%', padding: 2}}>{incidents.type}</Text>
                                 <Text style={{fontSize: 10, width: '20%', padding: 2}}>{data?.event?.user.fullName}</Text>
