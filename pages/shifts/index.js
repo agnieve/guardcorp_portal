@@ -26,6 +26,7 @@ export default function Shifts(props) {
         siteId: '',
         hTimeIn: '',
         hTimeOut: '',
+        recursiveType: ''
     });
     const [shiftId, setShiftId] = useState(0);
     const [action, setAction] = useState('');

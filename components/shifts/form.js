@@ -32,13 +32,13 @@ export default function Form(props) {
                 return await updateShift(data.shiftId, data.body, data.header)
             }
         },
-        onSuccess: ()=> {
+        onSuccess: () => {
             queryClient.invalidateQueries(['shifts']);
             queryClient.refetchQueries('shifts', {force: true});
         }
     });
 
-    async function formHandler(e){
+    async function formHandler(e) {
         e.preventDefault();
 
         if (session) {
@@ -52,18 +52,18 @@ export default function Form(props) {
 
             const result = await mutation.mutateAsync(data);
 
-            try{
-                if(result){
+            try {
+                if (result) {
                     modalToggleHandler();
                 }
-            }catch(error){
+            } catch (error) {
                 console.log(error);
             }
 
         }
     }
 
-    if(isFetching){
+    if (isFetching) {
         return null;
     }
 
@@ -79,8 +79,8 @@ export default function Form(props) {
                                 name="site"
                                 id="site"
                                 value={form['siteId']}
-                                onChange={(e)=> setValueHandler('siteId', e.target.value)}
-                                >
+                                onChange={(e) => setValueHandler('siteId', e.target.value)}
+                        >
                             <option value="" disabled>Select Site</option>
                             {sites.map(site => <option key={site._id} value={site._id}>{site.siteName}</option>)}
                         </select>
@@ -100,6 +100,73 @@ export default function Form(props) {
                             setTimeOut={setValueHandler}
                             type={'holiday'}
                         />
+
+                        <div className={'px-2 mt-3'}>
+                            <select className={'w-full px-4 py-2 border-2 border-slate-300 rounded'}
+                                    name="recursive"
+                                    id="recursive"
+                                    value={form['recursiveType']}
+                                    onChange={(e) => setValueHandler('recursiveType', e.target.value)}
+                            >
+                                <option value="" disabled selected>Select Recursive Settings</option>
+                                <option value="NO OF WEEK">No. of Weeks</option>
+                                <option value="DATE RANGE">Date Range</option>
+                                <option value="UNTIL CANCELLED">Until Cancelled</option>
+
+                            </select>
+                        </div>
+
+                        {
+                            form['recursiveType'] === 'DATE RANGE' &&
+                            <div className={'px-2 mt-3 flex flex-col'}>
+                                <div className={'flex mb-5'}>
+                                    <p className={'text-left mr-3'}>Date Start</p>
+                                    <input
+                                        // value={}
+                                        className={'border-b border-slate-400'}
+                                        // id={'shiftStart'}
+                                        type={'date'}
+                                        // onChange={(e) => setTimeIn(type === 'daily' ? 'timeIn' : 'hTimeIn', e.target.value)}
+                                    />
+                                </div>
+                                <div className={'flex mb-5'}>
+                                    <p className={'text-left mr-3'}>Date End</p>
+                                    <input
+                                        // value={}
+                                        className={'border-b border-slate-400'}
+                                        // id={'shiftStart'}
+                                        type={'date'}
+                                        // onChange={(e) => setTimeIn(type === 'daily' ? 'timeIn' : 'hTimeIn', e.target.value)}
+                                    />
+                                </div>
+                            </div>
+                        }
+                        {
+                            form['recursiveType'] === 'NO OF WEEK' &&
+                            <div className={'px-2 mt-3 flex flex-col'}>
+                                <div className={'flex mb-5'}>
+                                    <p className={'text-left mr-3'}>Date Start</p>
+                                    <input
+                                        // value={}
+                                        className={'border-b border-slate-400'}
+                                        // id={'shiftStart'}
+                                        type={'date'}
+                                        // onChange={(e) => setTimeIn(type === 'daily' ? 'timeIn' : 'hTimeIn', e.target.value)}
+                                    />
+                                </div>
+                                <div className={'flex'}>
+                                    <p className={'text-left mr-3'}>No. of Weeks</p>
+                                    <input
+                                        // value={}
+                                        className={'border-b border-slate-400'}
+                                        // id={'shiftStart'}
+                                        type={'number'}
+                                        // onChange={(e) => setTimeIn(type === 'daily' ? 'timeIn' : 'hTimeIn', e.target.value)}
+                                    />
+                                </div>
+                            </div>
+                        }
+
                     </div>
                     <div className={'flex justify-end mt-8 mx-4'}>
                         <button type={'button'} className={'pl-6 py-2'} onClick={modalToggleHandler}>Close</button>

@@ -38,7 +38,13 @@ export default function ShiftDetails(props) {
                     </>
                 }
                 toolTip={
-                    <DocumentIcon className="h-6 w-6 text-slate-500"/>}
+                <>
+                    <select className={'mr-3 border-b border-solid rounded'}>
+                        <option>Archived Shifts</option>
+                        <option>Upcoming Shifts</option>
+                    </select>
+                    <DocumentIcon className="h-6 w-6 text-slate-500"/>
+                </>}
             />
             <ShiftDetailList data={data}/>
         </div>
