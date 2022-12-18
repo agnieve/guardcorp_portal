@@ -140,7 +140,7 @@ export default function ShiftDetailList(props) {
                             {
                                 eventDetail?.patrol?.map((patrol, index) =>
                                     <tr key={index}>
-                                        <td>{new Date(patrol.date).toLocaleTimeString()}</td>
+                                        <td>{new Date(patrol.dateTime).toLocaleTimeString()}</td>
                                         <td>{patrol.type}</td>
                                         <td>{eventDetail?.event?.user?.fullName}</td>
                                     </tr> )
