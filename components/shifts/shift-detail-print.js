@@ -70,12 +70,16 @@ const MyDocument = ({data}) => {
                         }
 
                         {
-                            data?.patrol?.map((inspection, index) =>
-                                <View key={index} style={{justifyContent: 'space-between', flexDirection: "row"}}>
-                                <Text style={{fontSize: 10, width: '40%', padding: 2}}>{new Date(inspection.dateTime).toLocaleTimeString()}</Text>
-                                <Text style={{fontSize: 10, width: '40%', padding: 2}}>{inspection.type}</Text>
-                                <Text style={{fontSize: 10, width: '20%', padding: 2}}>{data?.event?.user.fullName}</Text>
-                            </View> )
+                            data?.patrol?.map((patrol, index) =>
+                            {
+                                if(patrol.status === 'START'){
+                                    return (<View key={index} style={{justifyContent: 'space-between', flexDirection: "row"}}>
+                                        <Text style={{fontSize: 10, width: '40%', padding: 2}}>{new Date(patrol.dateTime).toLocaleTimeString()}</Text>
+                                        <Text style={{fontSize: 10, width: '40%', padding: 2}}>{patrol.type}</Text>
+                                        <Text style={{fontSize: 10, width: '20%', padding: 2}}>{data?.event?.user.fullName}</Text>
+                                    </View>);
+                                }
+                            } )
                         }
 
                     </View>
