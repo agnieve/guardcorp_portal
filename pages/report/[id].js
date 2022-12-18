@@ -23,9 +23,9 @@ export default function ReportDownload(props) {
         (async () => {
             await refetch();
             console.log(data);
-            if (data || !data.message) {
-                await downloadDocument(data);
-            }
+            // if (data || !data.message) {
+            //     await downloadDocument(data);
+            // }
         })();
     }
 
@@ -47,7 +47,6 @@ export default function ReportDownload(props) {
                         <button onClick={downloadDocument.bind(this, data)}
                                 className={'bg-blue-600 text-white px-3 py-2 rounded-lg '}>Click to Download
                         </button>
-                        <h4>Click the button if the download did not start.</h4>
                     </>
             }
         </div>

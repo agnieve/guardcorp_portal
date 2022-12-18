@@ -25,7 +25,7 @@ export default function ShiftDetailList(props) {
     function actionButtons(original) {
         return (<div className={'flex justify-end'}>
             <button className={'mx-2'} onClick={async () => {
-                await router.push(`/reports/download/${original._id}`);
+                await router.push(`/report`);
             }}>
                 <CloudArrowDownIcon className="h-5 w-5 text-slate-500"/>
             </button>
