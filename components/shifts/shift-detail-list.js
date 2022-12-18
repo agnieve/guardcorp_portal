@@ -37,15 +37,20 @@ export default function ShiftDetailList(props) {
     const columns =[
         {
             Header: "Date",
-            accessor: "start",
+            accessor: "timeIn",
+            Cell: function ({row: {original}}) {
+                return <p>{new Date(original.start).toLocaleDateString()}</p>
+            }
         },
         {
             Header: "Team Members",
             accessor: "membersActive",
             Cell: function ({row: {original}}) {
-                return <ul>
-                    {original.user.firstName} {original.user.lastName}
-                </ul>
+                return <p>
+                    {original.user.firstName} {original.user.lastName} <br />
+                    <span>Time In: {new Date(original.start).toLocaleTimeString()}</span> <br />
+                    <span>Time Out: {new Date(original.end).toLocaleTimeString()}</span> <br />
+                </p>
             }
         },
         {
