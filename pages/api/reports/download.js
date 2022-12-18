@@ -25,6 +25,8 @@ export default async function handler(req, res) {
             _id: ObjectId(eventId),
         });
 
+        console.log(event);
+
         const clientCollection = db.collection("clients");
         const clientDb =  await clientCollection.findOne({
             _id: ObjectId(event.site.clientId),
