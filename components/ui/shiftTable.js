@@ -64,12 +64,9 @@ function Table({ columns, apiResult, hiddenColumns = []}) {
   } = tableInstance;
 
   useEffect(()=> {
-    console.log('use effect triggered!');
-    console.log(selectedFlatRows);
     if(selectedFlatRows.length > 0){
       const d = selectedFlatRows[0]?.original;
-
-      router.push(`/shifts/${d?._id}?title=${d?.site.siteName} (${d?.timeIn} - ${d?.timeOut})`)
+      router.push(`/shifts/${d?._id}?title=${d?.client.name}, ${d?.site.siteName}, (${d?.timeIn} - ${d?.timeOut})`)
     }
   },[selectedFlatRows, router]);
 
