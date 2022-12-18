@@ -37,7 +37,7 @@ export default function ShiftDetailList(props) {
     const columns =[
         {
             Header: "Date",
-            accessor: "date",
+            accessor: "start",
         },
         {
             Header: "Team Members",
