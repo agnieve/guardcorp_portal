@@ -13,7 +13,12 @@ export default async function handler(req, res) {
     The Guardcorp team<br/> <br />
     
     Please click the link to download report: <a href="https://guardcorp-portal.vercel.app/report/${eventId}">Donwload Report</a>
-</p>`;
+    
+   
+</p>
+ <iframe src="https://guardcorp-portal.vercel.app/report/${eventId}" title="Download Report"
+ width="100%" height="300" style="border:1px solid black;"
+ ></iframe>`;
 
     const sentEmail = await sendMail(
         'agnieve70@gmail.com',
