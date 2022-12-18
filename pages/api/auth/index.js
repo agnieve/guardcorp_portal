@@ -37,13 +37,17 @@ export default async function handler(req, res) {
                 throw new Error("No user found!");
             }
 
-            var day1 = new Date("08/25/2020");
-            var day2 = new Date(user.licenseExpire);
+            const day1 = new Date();
+            const day2 = new Date(user.licenseExpireDate);
 
-            var difference= Math.abs(day2-day1);
+            const difference= Math.abs(day2-day1);
             const days = difference/(1000 * 3600 * 24)
 
-            console.log(days)
+            if(days <= 7){
+                const result = await db.collection("alert").insertOne({
+                    eventId:'0000000', dateTime: day1, status: 'USER LICENSE TO EXPIRE'
+                });
+            }
 
             await client.close();
 
