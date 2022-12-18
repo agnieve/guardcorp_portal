@@ -11,90 +11,114 @@ const styles = StyleSheet.create({
     },
 });
 
-const MyDocument = () => (
-    <Document>
-        <Page size="A4" style={styles.page}>
-            <Image style={{zIndex:'-20', position:'absolute', top:0, right:0, width: '100%', height:100}} alt={'header image'} src={'http://localhost:3000/header.png'} />
-            <Text style={{textAlign: 'right', marginTop: 30, marginRight:30, fontSize: 12}}>Gaisano Mall (Client Name)</Text>
-            <Text style={{textAlign: 'right', fontSize:10, marginRight:30}}>11/16/2022</Text>
-            <Text style={{textAlign: 'right', fontSize:10, marginRight:30}}>7:30 - 15:30</Text>
-            <View style={{marginTop: 70, marginHorizontal: 25}}>
-                <Text style={{textAlign:'center'}}>Shift Report</Text>
-                <View style={styles.section}>
-                    <Text style={{fontSize:12}}>Team Members</Text>
-                    <View style={{justifyContent:'space-between', flexDirection:"row"}}>
-                        <Text style={{fontSize:10, width:'40%', padding: 2}}>Name</Text>
-                        <Text style={{fontSize:10, width:'40%', padding: 2}}>Email</Text>
-                        <Text style={{fontSize:10, width:'20%', padding: 2}}>License Number</Text>
-                    </View>
-                    <View style={{height:1, width:'100%', backgroundColor:'grey', marginBottom:5}}></View>
-                    <View style={{justifyContent:'space-between', flexDirection:"row"}}>
-                        <Text style={{fontSize:10, width:'40%', padding: 2}}>AG Nieve</Text>
-                        <Text style={{fontSize:10, width:'40%', padding: 2}}>agnieve70@gmail.com</Text>
-                        <Text style={{fontSize:10, width:'20%', padding: 2}}>1234</Text>
-                    </View>
-                    <View style={{justifyContent:'space-between', flexDirection:"row"}}>
-                        <Text style={{fontSize:10, width:'40%', padding: 2}}>John Doe</Text>
-                        <Text style={{fontSize:10, width:'40%', padding: 2}}>john@gmail.com</Text>
-                        <Text style={{fontSize:10, width:'20%', padding: 2}}>1234232</Text>
-                    </View>
-                </View>
-                <View style={styles.section}>
-                    <Text style={{fontSize:12}}>Activity Log</Text>
-                    <View style={{justifyContent:'space-between', flexDirection:"row"}}>
-                        <Text style={{fontSize:10, width:'40%', padding: 2}}>Time</Text>
-                        <Text style={{fontSize:10, width:'40%', padding: 2}}>Type of Activity</Text>
-                        <Text style={{fontSize:10, width:'20%', padding: 2}}>Member</Text>
-                    </View>
-                    <View style={{height:1, width:'100%', backgroundColor:'grey', marginBottom:5}}></View>
-                    <View style={{justifyContent:'space-between', flexDirection:"row"}}>
-                        <Text style={{fontSize:10, width:'40%', padding: 2}}>7:30</Text>
-                        <Text style={{fontSize:10, width:'40%', padding: 2}}>Checked Camera</Text>
-                        <Text style={{fontSize:10, width:'20%', padding: 2}}>AG</Text>
-                    </View>
-                    <View style={{justifyContent:'space-between', flexDirection:"row"}}>
-                        <Text style={{fontSize:10, width:'40%', padding: 2}}>7:32</Text>
-                        <Text style={{fontSize:10, width:'40%', padding: 2}}>Checked Camera</Text>
-                        <Text style={{fontSize:10, width:'20%', padding: 2}}>John Doe</Text>
-                    </View>
-                    <View style={{justifyContent:'space-between', flexDirection:"row"}}>
-                        <Text style={{fontSize:10, width:'40%', padding: 2}}>8:34</Text>
-                        <Text style={{fontSize:10, width:'40%', padding: 2}}>Start Patrol</Text>
-                        <Text style={{fontSize:10, width:'20%', padding: 2}}>AG</Text>
-                    </View>
-                    <View style={{justifyContent:'space-between', flexDirection:"row"}}>
-                        <Text style={{fontSize:10, width:'40%', padding: 2}}>8:34</Text>
-                        <Text style={{fontSize:10, width:'40%', padding: 2}}>Start Patrol</Text>
-                        <Text style={{fontSize:10, width:'20%', padding: 2}}>John Doe</Text>
-                    </View>
-                </View>
 
-                <View style={styles.section}>
-                    <Text style={{fontSize:12}}>Events/Incidents</Text>
-                    <View style={{justifyContent:'space-between', flexDirection:"row"}}>
-                        <Text style={{fontSize:10, width:'20%', padding: 2}}>Time</Text>
-                        <Text style={{fontSize:10, width:'20%', padding: 2}}>Type of Incident</Text>
-                        <Text style={{fontSize:10, width:'30%', padding: 2}}>Team</Text>
-                        <Text style={{fontSize:10, width:'30%', padding: 2}}>Detail</Text>
-                    </View>
-                    <View style={{height:1, width:'100%', backgroundColor:'grey', marginBottom:5}}></View>
-                    <Text style={{fontSize:10, width:'20%', padding: 2}}>No Event/Incident</Text>
-                </View>
-            </View>
-            <Image style={{position:'absolute', bottom: 0,
-                left: 0, width:'100%', height:70}} src={'http://localhost:3000/footer.png'} alt={'pdf footer'} />
-        </Page>
-    </Document>
-);
+const MyDocument = ({data}) => {
 
-export async function downloadDocument() {
+    const dateShift = new Date(data?.event?.start).toLocaleDateString();
+    const start = new Date(data?.event?.start).toLocaleTimeString();
+    const end = new Date(data?.event?.end).toLocaleTimeString();
+
+    return (
+
+
+        <Document>
+            <Page size="A4" style={styles.page}>
+                <Image style={{zIndex: '-20', position: 'absolute', top: 0, right: 0, width: '100%', height: 100}}
+                       alt={'header image'} src={'https://guardcorp-portal.vercel.app/header.png'}/>
+                <Text style={{
+                    textAlign: 'right',
+                    marginTop: 30,
+                    marginRight: 30,
+                    fontSize: 12
+                }}>{data?.event?.site.siteName}</Text>
+                <Text style={{textAlign: 'right', fontSize: 10, marginRight: 30}}>{dateShift}</Text>
+                <Text style={{textAlign: 'right', fontSize: 10, marginRight: 30}}>{start} - {end}</Text>
+                <View style={{marginTop: 70, marginHorizontal: 25}}>
+                    <Text style={{textAlign: 'center'}}>Shift Report</Text>
+                    <View style={styles.section}>
+                        <Text style={{fontSize: 12}}>Team Members</Text>
+                        <View style={{justifyContent: 'space-between', flexDirection: "row"}}>
+                            <Text style={{fontSize: 10, width: '40%', padding: 2}}>Name</Text>
+                            <Text style={{fontSize: 10, width: '40%', padding: 2}}>Email</Text>
+                            <Text style={{fontSize: 10, width: '20%', padding: 2}}>License Number</Text>
+                        </View>
+                        <View style={{height: 1, width: '100%', backgroundColor: 'grey', marginBottom: 5}}></View>
+                        <View style={{justifyContent: 'space-between', flexDirection: "row"}}>
+                            <Text style={{fontSize: 10, width: '40%', padding: 2}}>{data?.event?.user.fullName}</Text>
+                            <Text style={{fontSize: 10, width: '40%', padding: 2}}>{data?.event?.user.email}</Text>
+                            <Text style={{
+                                fontSize: 10,
+                                width: '20%',
+                                padding: 2
+                            }}>{data?.event?.user.licenseNumber}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.section}>
+                        <Text style={{fontSize: 12}}>Activity Log</Text>
+                        <View style={{justifyContent: 'space-between', flexDirection: "row"}}>
+                            <Text style={{fontSize: 10, width: '40%', padding: 2}}>Time</Text>
+                            <Text style={{fontSize: 10, width: '40%', padding: 2}}>Type of Activity</Text>
+                            <Text style={{fontSize: 10, width: '20%', padding: 2}}>Member</Text>
+                        </View>
+                        <View style={{height: 1, width: '100%', backgroundColor: 'grey', marginBottom: 5}}></View>
+                        {
+                            data?.inspections.map(inspection =>  <View style={{justifyContent: 'space-between', flexDirection: "row"}}>
+                                <Text style={{fontSize: 10, width: '40%', padding: 2}}>{new Date(inspection.date).toLocaleTimeString()}</Text>
+                                <Text style={{fontSize: 10, width: '40%', padding: 2}}>{inspection.type}</Text>
+                                <Text style={{fontSize: 10, width: '20%', padding: 2}}>{data?.event?.user.fullName}</Text>
+                            </View> )
+                        }
+
+                        {
+                            data?.patrol.map(inspection =>  <View style={{justifyContent: 'space-between', flexDirection: "row"}}>
+                                <Text style={{fontSize: 10, width: '40%', padding: 2}}>{new Date(inspection.dateTime).toLocaleTimeString()}</Text>
+                                <Text style={{fontSize: 10, width: '40%', padding: 2}}>{inspection.type}</Text>
+                                <Text style={{fontSize: 10, width: '20%', padding: 2}}>{data?.event?.user.fullName}</Text>
+                            </View> )
+                        }
+
+                    </View>
+
+                    <View style={styles.section}>
+                        <Text style={{fontSize: 12}}>Events/Incidents</Text>
+                        <View style={{justifyContent: 'space-between', flexDirection: "row"}}>
+                            <Text style={{fontSize: 10, width: '20%', padding: 2}}>Time</Text>
+                            <Text style={{fontSize: 10, width: '20%', padding: 2}}>Type of Incident</Text>
+                            <Text style={{fontSize: 10, width: '30%', padding: 2}}>Team</Text>
+                            <Text style={{fontSize: 10, width: '30%', padding: 2}}>Detail</Text>
+                        </View>
+                        <View style={{height: 1, width: '100%', backgroundColor: 'grey', marginBottom: 5}}></View>
+                        {
+                            data?.incidents.map(incidents =>  <View style={{justifyContent: 'space-between', flexDirection: "row"}}>
+                                <Text style={{fontSize: 10, width: '40%', padding: 2}}>{new Date(incidents.date).toLocaleTimeString()}</Text>
+                                <Text style={{fontSize: 10, width: '40%', padding: 2}}>{incidents.type}</Text>
+                                <Text style={{fontSize: 10, width: '20%', padding: 2}}>{data?.event?.user.fullName}</Text>
+                                <Text style={{fontSize: 10, width: '40%', padding: 2}}>{incidents.notes}</Text>
+                            </View> )
+                        }
+                    </View>
+                </View>
+                <Image style={{
+                    position: 'absolute', bottom: 0,
+                    left: 0, width: '100%', height: 70
+                }} src={'https://guardcorp-portal.vercel.app/footer.png'} alt={'pdf footer'}/>
+            </Page>
+        </Document>
+    );
+}
+
+export async function downloadDocument(data) {
+
+    console.log('from downloadDocument');
+    console.log(data);
     const blob = await ReactPDF.pdf(<MyDocument
+        data={data}
 
     />).toBlob();
     const url = URL.createObjectURL(blob);
 
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'GaisanoMall-11-16-2022.pdf'
+    a.download = data.event.start;
     a.click()
 }

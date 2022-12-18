@@ -17,20 +17,25 @@ export default async function handler(req, res) {
     }
 
     try{
-        const secret = process.env.NEXTAUTH_SECRET;
-        const token = req.headers.authorization.split(' ')[1];
-
-        const payload = jwt.verify(token, secret);
-
-        if(!payload){
-            throw new Error('Invalid Token');
-        }
+        // const secret = process.env.NEXTAUTH_SECRET;
+        // const token = req.headers.authorization.split(' ')[1];
+        //
+        // const payload = jwt.verify(token, secret);
+        //
+        // if(!payload){
+        //     throw new Error('Invalid Token');
+        // }
 
         const db = client.db();
 
         const eventCollection = db.collection("events");
         const event = await eventCollection.findOne({
             _id: ObjectId(eventId),
+        });
+
+        const clientCollection = db.collection("clients");
+        const clientDb =  await clientCollection.findOne({
+            _id: ObjectId(event.site.clientId),
         });
 
         const incidents = await db.collection('incidents').find(
@@ -47,13 +52,14 @@ export default async function handler(req, res) {
 
         res.status(200).json({
             event: event,
+            client: clientDb,
             incidents: incidents,
             inspections: inspections,
             patrol: patrol
         });
 
     }catch (error){
-        res.status(500).json({ message: error});
+        res.status(500).json({ message: error.message});
         return;
     }
 }
