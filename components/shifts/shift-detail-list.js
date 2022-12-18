@@ -4,12 +4,15 @@ import Modal from '../ui/modal';
 
 import {DocumentIcon, CloudArrowDownIcon} from "@heroicons/react/20/solid";
 import {downloadDocument} from "./shift-detail-print";
+import {useRouter} from "next/router";
 
 export default function ShiftDetailList(props) {
 
     const {data} = props;
     const [open, setOpen] = useState(false);
     const [openPdf, setOpenPdf] = useState(false);
+
+    const router = useRouter();
 
     function openHandler(){
         setOpen(prev=> !prev);
@@ -22,7 +25,7 @@ export default function ShiftDetailList(props) {
     function actionButtons(original) {
         return (<div className={'flex justify-end'}>
             <button className={'mx-2'} onClick={async () => {
-                await downloadDocument();
+                await router.push(`/reports/download/${orignal._id}`);
             }}>
                 <CloudArrowDownIcon className="h-5 w-5 text-slate-500"/>
             </button>
