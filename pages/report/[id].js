@@ -23,7 +23,7 @@ export default function ReportDownload(props) {
         (async () => {
             await refetch();
             console.log(data);
-            if(data || !data.message){
+            if (data || !data.message) {
                 await downloadDocument(data);
             }
         })();
@@ -40,9 +40,9 @@ export default function ReportDownload(props) {
             <Image src={'/guardcorp_logo.png'} width={100} height={100} alt={'logo'}/>
             <h1>Download Report</h1>
             {
-                !data || data.message ?
-                    <h4>File not found</h4>
-                    : <>
+                !data ?
+                    <Loader/>
+                    : data.message ? <h4>File not Found</h4> : <>
                         <h2 className={'my-5'}>{data?.event?.start}</h2>
                         <button onClick={downloadDocument.bind(this, data)}
                                 className={'bg-blue-600 text-white px-3 py-2 rounded-lg '}>Click to Download
