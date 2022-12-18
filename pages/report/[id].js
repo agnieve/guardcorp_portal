@@ -6,7 +6,6 @@ import Image from "next/image";
 import {useQuery} from "@tanstack/react-query";
 import Loader from "../../components/ui/loader";
 import {getEvent} from "../../helpers/api-utils/events";
-import {useEffect, useState} from "react";
 
 
 export default function ReportDownload(props) {
@@ -14,7 +13,7 @@ export default function ReportDownload(props) {
     const router = useRouter()
     const {id} = router.query;
 
-    const {isLoading, refetch, data, isError} = useQuery({
+    const {isLoading, refetch, data} = useQuery({
         queryKey: ['report'],
         queryFn: getEvent.bind(this, id),
         enabled: false
@@ -24,7 +23,7 @@ export default function ReportDownload(props) {
         (async () => {
             await refetch();
             console.log(data);
-            if(!data.message){
+            if(!data || !data.message){
                 await downloadDocument(data);
             }
         })();
@@ -41,7 +40,7 @@ export default function ReportDownload(props) {
             <Image src={'/guardcorp_logo.png'} width={100} height={100} alt={'logo'}/>
             <h1>Download Report</h1>
             {
-                data.message ?
+                !data || data.message ?
                     <h4>File not found</h4>
                     : <>
                         <h2 className={'my-5'}>{data?.event?.start}</h2>
