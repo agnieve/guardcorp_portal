@@ -3,8 +3,9 @@
 import {getSession} from "next-auth/react";
 import DashboardIcons from "../../components/overview/DashboardIcons";
 import Table from "../../components/ui/table";
-import {useMemo} from "react";
+import {useMemo, useState} from "react";
 import {BellAlertIcon, FlagIcon, NoSymbolIcon, UserIcon} from "@heroicons/react/24/solid";
+import BreadCrumb from "../../components/ui/breadcrumb";
 
 export default function Overview() {
 
@@ -41,31 +42,58 @@ export default function Overview() {
         },
     ];
 
-    const columns = useMemo(
-        () => [
-            {
-                Header: 'Guard',
-                accessor: 'guard',
-            },
-            {
-                Header: "Site",
-                accessor: "siteName",
-            },
-            {
-                Header: 'Address',
-                accessor: 'address',
-            },
-            {
-                Header: 'Logged In',
-                accessor: 'shiftStart',
-            },
+    const columns = [
+        {
+            Header: 'Guard',
+            accessor: 'guard',
+        },
+        {
+            Header: "Site",
+            accessor: "siteName",
+        },
+        {
+            Header: 'Address',
+            accessor: 'address',
+        },
+        {
+            Header: 'Logged In',
+            accessor: 'shiftStart',
+        },
 
-        ],
-        []
-    );
+    ];
+
+    const [filterTime, setFilterTime] = useState("");
 
     return (
             <div className={'flex flex-col'}>
+                <BreadCrumb
+                    headerTitle={''}
+                    toolTip={<>
+                        <select className={'mr-2'} value={filterTime} onChange={(e) => {
+                            setFilterTime(e.target.value)
+                        }
+                        }>
+                            <option value={'Day'}>Day</option>
+                            <option value={'Week'}>Week</option>
+                            <option value={'Month'}>Month</option>
+                            <option value={'Quarter'}>Quarter</option>
+                            <option value={'Custom'}>Custom</option>
+                        </select>
+
+                        {
+                            filterTime === 'Custom' &&
+                            <div>
+                                <input placeholder={'Date Start'} type={'date'}
+                                       className={'border-b border-slate-300'}/>
+                                <span> - </span>
+                                <input placeholder={'Date End'} type={'date'}
+                                       className={'border-b border-slate-300'}/>
+                            </div>
+                        }
+
+                        <button className={'bg-blue-700 text-white rounded px-2 ml-2'}>Filter</button>
+                        <button className={'bg-slate-700 text-white rounded px-2 ml-1'}>Clear</button>
+                    </>} />
                 <div className={'flex justify-between space-x-5'}>
                     {
                         icons.map(icon => <DashboardIcons
