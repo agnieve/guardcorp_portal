@@ -85,19 +85,19 @@ export default function Overview(props) {
             switch (filterTime) {
                 case 'Day':
                     actives.map((data) => {
-                        if (new Date(data._id.start).getDate() === new Date().getDate()) {
+                        if (new Date(data._id.start).setHours(0,0,0,0) === new Date().setHours(0,0,0,0)) {
                             activeNewArr.push(data);
                         }
                     });
 
                     alerts.map((data) => {
-                        if (new Date(data.dateTime).getDate() === new Date().getDate()) {
+                        if (new Date(data.dateTime).setHours(0,0,0,0) === new Date().setHours(0,0,0,0)) {
                             alertNewArr.push(data);
                         }
                     });
 
                     incidents.map((data) => {
-                        if (new Date(data.date).getDate()  === new Date().getDate()) {
+                        if (new Date(data.date).setHours(0,0,0,0)  === new Date().setHours(0,0,0,0)) {
                             incidentNewArr.push(data);
                         }
                     });
@@ -149,7 +149,7 @@ export default function Overview(props) {
 
                         let newDate = new Date(start.setDate(start.getDate() - 90));
 
-                        if (new Date(data._id.start) >= newDate && new Date(data._id.start) <= new Date()) {
+                        if (new Date(data._id.start).setHours(0,0,0,0) >= newDate.setHours(0,0,0,0) && new Date(data._id.start).setHours(0,0,0,0) <= new Date().setHours(0,0,0,0)) {
                             activeNewArr.push(data);
                         }
                     });
@@ -159,7 +159,7 @@ export default function Overview(props) {
 
                         let newDate = new Date(start.setDate(start.getDate() - 90));
 
-                        if (new Date(data.dateTime) >= newDate && new Date(data.dateTime) <= new Date()) {
+                        if (new Date(data.dateTime).setHours(0,0,0,0) >= newDate.setHours(0,0,0,0) && new Date(data.dateTime).setHours(0,0,0,0) <= new Date().setHours(0,0,0,0)) {
                             alertNewArr.push(data);
                         }
                     });
@@ -169,7 +169,7 @@ export default function Overview(props) {
 
                         let newDate = new Date(start.setDate(start.getDate() - 90));
 
-                        if (new Date(data.date) >= newDate && new Date(data.date) <= new Date()) {
+                        if (new Date(data.date).setHours(0,0,0,0) >= newDate.setHours(0,0,0,0) && new Date(data.date).setHours(0,0,0,0) <= new Date().setHours(0,0,0,0)) {
                             incidentNewArr.push(data);
                         }
                     });

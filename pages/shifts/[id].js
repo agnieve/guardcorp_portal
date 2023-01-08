@@ -90,11 +90,11 @@ export default function ShiftDetails(props) {
 
 
                             const result = data?.filter((event) => {
-                                return new Date(event.start).getDate() === start2.getDate();
+                                return new Date(event.start).setHours(0,0,0,0) === start2.setHours(0,0,0,0)
                             });
 
                             const result2 = shiftMembers?.filter((member) => {
-                                return new Date(member.date).getDate() === start2.getDate();
+                                return new Date(member.date).setHours(0,0,0,0) === start2.setHours(0,0,0,0)
                             })
 
                             arr.push({
@@ -113,11 +113,11 @@ export default function ShiftDetails(props) {
                     let newDate = new Date(start.setDate(start.getDate() + numOfRecursion));
 
                     const result = data?.find((event) => {
-                        return new Date(event.start).getDate() === start.getDate();
+                        return new Date(event.start).setHours(0,0,0,0) === start.setHours(0,0,0,0);
                     });
 
                     const result2 = shiftMembers?.find((member) => {
-                        return new Date(member.date).getDate() === start.getDate();
+                        return new Date(member.date).setHours(0,0,0,0) === start.setHours(0,0,0,0);
                     })
 
                     arr.push({
@@ -145,7 +145,7 @@ export default function ShiftDetails(props) {
             if(dateStart !== "" && dateEnd !== ""){
 
                 arr.map((data) => {
-                    if (new Date(data.date).getDate() >= new Date(dateStart).getDate() && new Date(data.date).getDate() <= new Date(dateEnd).getDate()) {
+                    if (new Date(data.date).setHours(0,0,0,0) >= new Date(dateStart).setHours(0,0,0,0) && new Date(data.date).setHours(0,0,0,0) <= new Date(dateEnd).setHours(0,0,0,0)) {
                         newArr.push(data);
                     }
                 });

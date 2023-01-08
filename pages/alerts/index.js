@@ -67,7 +67,7 @@ export default function Alerts(props) {
                     switch (filterTime) {
                         case 'Day':
                             alertList.map((data) => {
-                                if (new Date(data.dateTime).getDate() === new Date().getDate()) {
+                                if (new Date(data.dateTime).setHours(0,0,0,0) === new Date().setHours(0,0,0,0)) {
                                     alertNewArr.push(data);
                                 }
                             });
