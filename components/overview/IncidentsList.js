@@ -17,14 +17,14 @@ export default function IncidentsList(props){
             Header: "Site",
             accessor: "site",
             Cell: function ({row: {original}}) {
-                return original.eventDetails[0].site.siteName;
+                return original.events.site.siteName;
             }
         },
         {
             Header: "Team Member",
             accessor: "teamMember",
             Cell: function ({row: {original}}) {
-                return original.eventDetails[0].user.firstName + " " + original.eventDetails[0].user.lastName;
+                return original.events.user.firstName + " " + original.events.user.lastName;
             }
         },
         {
@@ -41,7 +41,7 @@ export default function IncidentsList(props){
     return (
         <div className={'mt-10'}>
             <h1 className={'text-slate-700 mb-2'}>Incidents</h1>
-            <Table columns={columns} apiResult={data} hiddenColumns={["lastName"]} />
+            <Table columns={columns} apiResult={data} />
         </div>
     )
 }
