@@ -56,34 +56,32 @@ export default function Form(props) {
 
         if (session) {
 
-            setForm(prevState => {
-                let formState = {...prevState};
-                let daysArr = [];
-                if (su) daysArr.push('su');
-                if (m) daysArr.push('m');
-                if (t) daysArr.push('t');
-                if (w) daysArr.push('w');
-                if (th) daysArr.push('th');
-                if (f) daysArr.push('f');
-                if (s) daysArr.push('s');
 
-                const now = new Date();
+            let daysArr = [];
+            if (su) daysArr.push('su');
+            if (m) daysArr.push('m');
+            if (t) daysArr.push('t');
+            if (w) daysArr.push('w');
+            if (th) daysArr.push('th');
+            if (f) daysArr.push('f');
+            if (s) daysArr.push('s');
 
-                formState['recursion'] = {
-                    repeatEvery: repeatEvery,
-                    repeatEveryCount: repeatEveryCount,
-                    days: daysArr,
-                    ends: ends,
-                    startDate: now,
-                    endDate: endDate
-                };
-                return formState;
-            });
+            const now = new Date();
 
-            console.log(form);
+            const recursionData = {
+                recursion:
+                    {
+                        repeatEvery: repeatEvery,
+                        repeatEveryCount: repeatEveryCount,
+                        days: daysArr,
+                        ends: ends,
+                        startDate: now,
+                        endDate: endDate
+                    }
+            }
 
             const data = {
-                body: form,
+                body: {...form, ...recursionData},
                 header: session.user.accessToken,
                 shiftId: shiftId,
                 type: action
