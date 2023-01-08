@@ -104,19 +104,33 @@ export default function Overview(props) {
                     break;
                 case 'Week':
                     actives.map((data) => {
-                        if (new Date(data._id.start) <= new Date(new Date() + 7)) {
+
+                        const start = new Date();
+
+                        let newDate = new Date(start.setDate(start.getDate() + 7));
+
+                        if (new Date(data._id.start) <= newDate.setHours(0,0,0,0)) {
                             activeNewArr.push(data);
                         }
                     });
 
                     alerts.map((data) => {
-                        if (new Date(data.dateTime) <= new Date(new Date() + 7)) {
+                        const start = new Date();
+
+                        let newDate = new Date(start.setDate(start.getDate() + 7));
+
+                        if (new Date(data.dateTime) <= newDate.setHours(0,0,0,0)) {
                             alertNewArr.push(data);
                         }
                     });
 
                     incidents.map((data) => {
-                        if (new Date(data.date) <= new Date(new Date() + 7)) {
+
+                        const start = new Date();
+
+                        let newDate = new Date(start.setDate(start.getDate() + 7));
+
+                        if (new Date(data.date) <= newDate.setHours(0,0,0,0)) {
                             incidentNewArr.push(data);
                         }
                     });
