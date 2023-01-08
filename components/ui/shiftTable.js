@@ -73,7 +73,7 @@ function Table({ columns, apiResult, hiddenColumns = []}) {
       setShift(d);
       router.push(`/shifts/${d?._id}?title=${d?.client.name}, ${d?.site.siteName}, (${d?.timeIn} - ${d?.timeOut})`)
     }
-  },[selectedFlatRows, router]);
+  },[selectedFlatRows, router, setShift]);
 
 
   return (

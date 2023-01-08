@@ -118,8 +118,8 @@ export default function ShiftDetailList(props) {
 
                 if (original?.members
                 ) {
-                    return original?.members?.map((member) => {
-                        return <p>{`${member?.user?.fullName} ${member?.start ?
+                    return original?.members?.map((member, index) => {
+                        return <p key={index}>{`${member?.user?.fullName} ${member?.start ?
                             ` ${new Date(member?.start).toLocaleTimeString()} - ${new Date(member?.end).toLocaleTimeString()}`
                             : ''}`}</p>
                     })
