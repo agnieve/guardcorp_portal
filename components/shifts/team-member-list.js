@@ -10,7 +10,6 @@ export default function TeamMemberList(props) {
     function actionButtons(original) {
         return (<div className={'flex justify-end'}>
             <button className={'mx-2'} onClick={() => {
-                setMember(original);
                 setShiftMemberId(original._id);
                 openModalHandler();
             }}>

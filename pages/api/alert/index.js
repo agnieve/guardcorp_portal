@@ -31,12 +31,8 @@ export default async function handler(req, res) {
             $lookup: {
                 from: 'events',
                 localField: 'objectId(eventId)',
-                foreignField: 'c',
-                let: {
-                    eventId: "eventId",
-                    event: "$_id"
-                },
-                as: 'eventDetails',
+                foreignField: 'eventId',
+                as: 'events',
                 pipeline: [
                     {
                         "$limit": 1
@@ -44,7 +40,36 @@ export default async function handler(req, res) {
                 ]
             },
 
-        }, {"$sort": {"_id": -1}}]).toArray();
+
+        },
+            {
+                $unwind: {
+                    path: "$events",
+                }
+            },
+            {
+                $lookup: {
+                    from: "clients",
+                    localField: "objectId(events.site.clientId)",
+                    foreignField: "ObjectId(_id)",
+                    as: "client",
+                    pipeline: [
+                        {
+                            "$limit": 1
+                        }
+                    ]
+                }
+            },
+
+            {
+                $unwind: {
+                    path: "$client",
+                }
+            },
+            {"$sort": {"_id": -1}},
+
+
+        ]).toArray();
 
         res.status(200).json(document);
 

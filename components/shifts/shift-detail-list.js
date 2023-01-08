@@ -2,48 +2,60 @@ import {useEffect, useMemo, useState} from "react";
 import Table from "../ui/table";
 import Modal from '../ui/modal';
 
-import {DocumentIcon, CloudArrowDownIcon} from "@heroicons/react/20/solid";
+import {DocumentIcon, CloudArrowDownIcon, TrashIcon, XCircleIcon} from "@heroicons/react/20/solid";
 import {downloadDocument} from "./shift-detail-print";
 import {useRouter} from "next/router";
 import {useQuery} from "@tanstack/react-query";
 import {getEvent} from "../../helpers/api-utils/events";
+import {UsersIcon} from "@heroicons/react/24/solid";
+import AddMemberForm from "./add-member-form";
+import TeamMemberList from "./team-member-list";
+import DeleteTeamMember from "./team-member-delete";
 
 export default function ShiftDetailList(props) {
 
-    const {data} = props;
+    const {data, session, shiftId, shiftMembers} = props;
     const [open, setOpen] = useState(false);
     const [openPdf, setOpenPdf] = useState(false);
     const [eventId, setEventId] = useState("");
+    const [openTeamMemberModal, setOpenTeamMemberModal] = useState(false);
+    const [selectedDate, setSelectedDate] = useState([]);
+    const [shiftMemberId, setShiftMemberId] = useState("");
+    const [modalDelete, setModalDelete] = useState(false);
 
     const router = useRouter();
 
-    function openHandler(){
-        setOpen(prev=> !prev);
+    function openHandler() {
+        setOpen(prev => !prev);
     }
 
-    function openPdfHandler(){
-        setOpenPdf(prev=> !prev);
+    function openTeamMemberModalHandler() {
+        setOpenTeamMemberModal(prev => !prev);
     }
 
-    const {isLoading, refetch, data:eventDetail} = useQuery({
+    function openPdfHandler() {
+        setOpenPdf(prev => !prev);
+    }
+
+    const {isLoading, refetch, data: eventDetail} = useQuery({
         queryKey: ['report'],
         queryFn: getEvent.bind(this, eventId),
         enabled: false
     });
 
-    useEffect(()=> {
+    useEffect(() => {
         refetch();
-    },[eventId]);
+    }, [eventId]);
 
     function actionButtons(original) {
         return (<div className={'flex justify-end'}>
             <button className={'mx-2'} onClick={async () => {
-                await router.push(`/report/${original._id}`);
+                await router.push(`/report/${original.members[0]._id}`);
             }}>
                 <CloudArrowDownIcon className="h-5 w-5 text-slate-500"/>
             </button>
             <button className={'mx-2'} onClick={async () => {
-                setEventId(original._id);
+                setEventId(original.members[0]._id);
                 await refetch().then(data => {
                     console.log(data);
                 });
@@ -54,40 +66,119 @@ export default function ShiftDetailList(props) {
         </div>);
     }
 
-    const columns =[
+    function addMemberActionButton(original) {
+        return (<div className={'flex justify-end'}>
+            <button type={'button'} onClick={() => {
+                setSelectedDate(original);
+                openTeamMemberModalHandler();
+            }} className={'mx-2 z-50'}>
+                <UsersIcon className="h-5 w-5 text-slate-500"/>
+            </button>
+        </div>);
+    }
+
+    function deleteMemberActionButton(original) {
+        return (<div className={'flex justify-end'}>
+            <button type={'button'} onClick={() => {
+            }} className={'mx-2 z-50'}>
+                <TrashIcon className="h-5 w-5 text-slate-500"/>
+            </button>
+        </div>);
+    }
+
+    function modalDeleteHandler() {
+        setModalDelete(prev => !prev);
+    }
+
+    const teamMemberColumn = [
+        {
+            Header: "Member",
+            accessor: "member",
+        },
+        {
+            Header: "Action",
+            accessor: "action",
+            Cell: function ({row: {original}}) {
+
+                return deleteMemberActionButton(original);
+            }
+        }
+    ];
+
+    const columns = [
         {
             Header: "Date",
-            accessor: "timeIn",
-            Cell: function ({row: {original}}) {
-                return <p>{new Date(original.start).toLocaleDateString()}</p>
-            }
+            accessor: "date",
         },
         {
             Header: "Team Members",
-            accessor: "membersActive",
+            accessor: "members",
             Cell: function ({row: {original}}) {
-                return <p>
-                    {original.user.firstName} {original.user.lastName} <br />
-                    <span>Time In: {new Date(original.start).toLocaleTimeString()}</span> <br />
-                    <span>Time Out: {new Date(original.end).toLocaleTimeString()}</span> <br />
-                </p>
+
+
+                if (original?.members
+                ) {
+                    return original?.members?.map((member) => {
+                        return <p>{`${member?.user?.fullName} ${member?.start ?
+                            ` ${new Date(member?.start).toLocaleTimeString()} - ${new Date(member?.end).toLocaleTimeString()}`
+                            : ''}`}</p>
+                    })
+                }
+
+                return "";
+
+                // return <p>
+                //     {original.user.firstName} {original.user.lastName} <br />
+                //     <span>Time In: {new Date(original.start).toLocaleTimeString()}</span> <br />
+                //     <span>Time Out: {new Date(original.end).toLocaleTimeString()}</span> <br />
+                // </p>
             }
         },
         {
             Header: "Action",
             accessor: "action",
             Cell: function ({row: {original}}) {
-                return actionButtons(original);
+
+                if (original?.members) {
+                    if (original.members.length !== 0 && original.members[0].start) {
+                        return actionButtons(original);
+                    }
+                }
+
+                return addMemberActionButton(original);
             }
         }
     ];
 
-    if(isLoading){
+    if (isLoading) {
         return 'Loading...';
     }
 
     return (
         <div>
+            {
+                openTeamMemberModal ?
+                    <div className={'p-5 bg-slate-50'}>
+                        <div className="flex justify-between">
+                            <h2 className={'text-2xl font-semibold text-slate-300'}>Team Members
+                                for {selectedDate.date}</h2>
+                            <button onClick={() => openTeamMemberModalHandler()}>
+                                <XCircleIcon className="h-7 w-7 text-slate-500"/>
+                            </button>
+                        </div>
+                        <AddMemberForm session={session} shiftId={shiftId} date={selectedDate.date}/>
+                        <TeamMemberList
+                            openModalHandler={modalDeleteHandler}
+                            setShiftMemberId={setShiftMemberId}
+                            shiftMembers={selectedDate.members ? selectedDate.members : []}/>
+                        <DeleteTeamMember
+                            openModal={modalDelete}
+                            openModalHandler={modalDeleteHandler}
+                            shiftMemberId={shiftMemberId}
+                            session={session}
+                        />
+                    </div> : <Table columns={columns} apiResult={data.length > 0 ? data : []}/>
+            }
             <Modal open={open} setOpen={openHandler}>
                 <div className={'w-full px-5'}>
                     <div className={'flex flex-col items-center'}>
@@ -141,9 +232,9 @@ export default function ShiftDetailList(props) {
                                 eventDetail?.patrol?.map((patrol, index) =>
                                     <tr key={index}>
                                         <td>{new Date(patrol.dateTime).toLocaleTimeString()}</td>
-                                        <td>{patrol.status === 'START' ? `${patrol.status} PATROL`: `END PATROL - ${patrol.type}`}</td>
+                                        <td>{patrol.status === 'START' ? `${patrol.status} PATROL` : `END PATROL - ${patrol.type}`}</td>
                                         <td>{eventDetail?.event?.user?.fullName}</td>
-                                    </tr> )
+                                    </tr>)
                             }
                             </tbody>
                         </table>
@@ -154,7 +245,7 @@ export default function ShiftDetailList(props) {
                     </div>
                 </div>
             </Modal>
-            <Table columns={columns} apiResult={data.length > 0 ? data : []}/>
+
         </div>
     )
 }

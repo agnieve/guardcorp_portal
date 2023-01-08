@@ -2,7 +2,7 @@ import {getSession} from "next-auth/react";
 import {BellAlertIcon} from "@heroicons/react/24/solid";
 import BreadCrumb from "../../components/ui/breadcrumb";
 import Table from "../../components/ui/table";
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {useQuery} from "@tanstack/react-query";
 import Loader from "../../components/ui/loader";
 import {getAllAlerts} from "../../helpers/api-utils/alerts";
@@ -19,11 +19,24 @@ export default function Alerts(props) {
 
     const [filterType, setFilterType] = useState("");
     const [filterTime, setFilterTime] = useState("");
+    const [filterStart, setFilterStart] = useState("");
+    const [filterEnd, setFilterEnd] = useState("");
+    const [clientSearch, setClientSearch] = useState("");
+    const [siteSearch, setSiteSearch] = useState("");
+    const [teamMemberSearch, setTeamMemberSearch] = useState("");
+    const [filterOn, setFilterOn] = useState(false);
+    const [filterCount, setFilterCount] = useState(0);
+    const [alertList, setAlertList] = useState([]);
+    const [alertListFilter, setAlertListFilter] = useState([]);
+
 
     const columns = [
         {
             Header: 'Date/Time',
             accessor: 'dateTime',
+            Cell: function ({row: {original}}) {
+                return new Date(original.dateTime).toLocaleDateString();
+            }
         },
 
         {
@@ -34,11 +47,80 @@ export default function Alerts(props) {
             Header: "Team Member",
             accessor: "action",
             Cell: function ({row: {original}}) {
-                return original.eventDetails[0].user.firstName + " " + original.eventDetails[0].user.lastName;
+                return original.events.user.firstName + " " + original.events.user.lastName;
             }
         }
 
     ];
+
+    useEffect(() => {
+        setAlertList(data);
+    }, [data]);
+
+    useEffect(() => {
+        if (filterCount === 0) {
+            setAlertListFilter([]);
+        }else{
+            let alertNewArr = [];
+            switch(filterType){
+                case 'Time':
+                    switch (filterTime) {
+                        case 'Day':
+                            alertList.map((data) => {
+                                if (new Date(data.dateTime).getDate() === new Date().getDate()) {
+                                    alertNewArr.push(data);
+                                }
+                            });
+                            break;
+                        case 'Week':
+
+                            alertList.map((data) => {
+                                if (new Date(data.dateTime) <= new Date(new Date() + 7)) {
+                                    alertNewArr.push(data);
+                                }
+                            });
+                            break;
+                        case 'Custom' :
+
+                            alertList.map((data) => {
+                                if (new Date(data.dateTime) >= new Date(filterStart) && new Date(data.dateTime) <= new Date(filterEnd)) {
+                                    alertNewArr.push(data);
+                                }
+                            });
+                            break;
+                    }
+                    break;
+                case 'Client':
+                    let regex = new RegExp(clientSearch, 'i');
+                    alertList.map((data) => {
+                        if(regex.test(data.client.name)){
+                            alertNewArr.push(data);
+                        }
+                    });
+                    break;
+                case 'Site':
+                    let regex2 = new RegExp(siteSearch, 'i');
+                    alertList.map((data) => {
+                        if(regex2.test(data.events.site.siteName)){
+                            alertNewArr.push(data);
+                        }
+                    });
+                    break;
+                case 'Team Member':
+                    let regex3 = new RegExp(teamMemberSearch, 'i');
+                    alertList.map((data) => {
+                        if(regex3.test(data.events.user.fullName)){
+                            alertNewArr.push(data);
+                        }
+                    });
+                    break;
+            }
+            setAlertListFilter(alertNewArr);
+
+        }
+
+
+    }, [filterCount]);
 
     if (isLoading) {
         return <Loader/>
@@ -55,7 +137,7 @@ export default function Alerts(props) {
                             setFilterType(e.target.value);
                         }} className={'mr-3 border-b border-solid rounded'}>
                             <option disabled selected>Filter By</option>
-                            <option value={'Time'} key={'date range'}>Time</option>
+                            <option value={'Time'} key={'date range'}>Date</option>
                             <option value={'Client'} key={'team member'}>Client</option>
                             <option value={'Site'} key={'team member'}>Site</option>
                             <option value={'Team Member'} key={'team member'}>Guard / Team Member</option>
@@ -72,13 +154,13 @@ export default function Alerts(props) {
                                     <option value={'Custom'}>Custom</option>
                                 </select>
                                 : filterType === 'Client' ?
-                                    <input placeholder={'Client Name'} type={'text'}
+                                    <input value={clientSearch} onChange={(e)=> setClientSearch(e.target.value)} placeholder={'Client Name'} type={'text'}
                                            className={'border-b border-slate-300'}/>
                                     : filterType === 'Site' ?
-                                        <input placeholder={'Site Name'} type={'text'}
+                                        <input value={siteSearch} onChange={(e)=> setSiteSearch(e.target.value)} placeholder={'Site Name'} type={'text'}
                                                className={'border-b border-slate-300'}/>
                                         : filterType === 'Team Member' ?
-                                            <input placeholder={'Team Member'} type={'text'}
+                                            <input value={teamMemberSearch} onChange={(e)=> setTeamMemberSearch(e.target.value)} placeholder={'Team Member'} type={'text'}
                                                    className={'border-b border-slate-300'}/>
                                             : null
                         }
@@ -86,22 +168,36 @@ export default function Alerts(props) {
                         {
                             filterType === 'Time' && filterTime === 'Custom' &&
                             <div>
-                                <input placeholder={'Date Start'} type={'date'}
+                                <input placeholder={'Date Start'} type={'date'} value={filterStart}
+                                       onChange={(e) => {
+                                           setFilterStart(e.target.value)}}
                                        className={'border-b border-slate-300'}/>
                                 <span> - </span>
-                                <input placeholder={'Date End'} type={'date'}
+                                <input placeholder={'Date End'} type={'date'} value={filterEnd}
+                                           onChange={(e) => {
+                                               setFilterEnd(e.target.value)}}
                                        className={'border-b border-slate-300'}/>
                             </div>
                         }
 
-                        <button className={'bg-blue-700 text-white rounded px-2 ml-2'}>Filter</button>
-                        <button className={'bg-slate-700 text-white rounded px-2 ml-1'}>Clear</button>
+                        <button onClick={() => {
+                            setFilterCount(prev => prev + 1)
+                            setFilterOn(true);
+                        }
+                        } className={'bg-blue-700 text-white rounded px-2 ml-2'}>Filter
+                        </button>
+                        <button onClick={() => {
+                            setFilterCount(0)
+                            setFilterOn(false);
+                        }
+                        } className={'bg-slate-700 text-white rounded px-2 ml-1'}>Clear
+                        </button>
 
                     </>}
             />
 
 
-            <Table columns={columns} apiResult={data}/>
+            <Table columns={columns} apiResult={filterOn ? alertListFilter ? alertListFilter : [] : alertList ? alertList : []}/>
         </div>
     )
 }

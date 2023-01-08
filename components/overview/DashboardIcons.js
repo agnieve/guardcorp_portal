@@ -6,12 +6,12 @@ import { ChartBarIcon,
 
 export default function DashboardIcons(props){
 
-    const {icon, value, label, color} = props;
+    const {icon, value, label, color, onClick} = props;
 
     console.log(icon);
 
     return (
-        <button className={'hover:shadow-lg w-1/4'}>
+        <button className={'hover:shadow-lg w-1/4'} onClick={onClick}>
             <div className={`${color} bg-slate-400 py-4 px-12 rounded-lg`}>
                 <div className={'flex items-center text-white'}>
                     <div>

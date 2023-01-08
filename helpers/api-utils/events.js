@@ -1,11 +1,14 @@
 
-export async function getAllEvents(id, token){
+export async function getAllEvents(args){
+
+    console.log(`${process.env.base_url}/api/events?eventId=${args[0]}`);
+
     try{
 
-        const response = await fetch(`${process.env.base_url}/api/events?eventId=${id}`, {
+        const response = await fetch(`${process.env.base_url}/api/events?eventId=${args[0]}`, {
             method: "GET",
             headers: {
-                Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${args[1]}`,
             },
         })
 

@@ -38,6 +38,16 @@ export async function getAllUsers(token) {
     return await response.json();
 }
 
+export async function getActiveUsers(token) {
+    const response = await fetch(`${process.env.base_url}/api/users/active`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        }
+    });
+
+    return await response.json();
+}
+
 export async function getAllGuards(token) {
     const response = await fetch(`${process.env.base_url}/api/users/guards`, {
         headers: {

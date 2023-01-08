@@ -4,10 +4,23 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {getAllSites} from "../../helpers/api-utils/sites";
 import Loader from "../ui/loader";
 import {createShift, updateShift} from "../../helpers/api-utils/shifts";
+import CircleButton from "./circle-button";
+import {useState} from "react";
 
 export default function Form(props) {
 
     const {showModal, modalToggleHandler, action, setForm, form, session, shiftId} = props;
+    const [repeatEveryCount, setRepeatEveryCount] = useState(1);
+    const [repeatEvery, setRepeatEvery] = useState("");
+    const [su, setSu] = useState(false);
+    const [m, setM] = useState(false);
+    const [t, setT] = useState(false);
+    const [w, setW] = useState(false);
+    const [th, setTh] = useState(false);
+    const [f, setF] = useState(false);
+    const [s, setS] = useState(false);
+    const [ends, setEnds] = useState("Never");
+    const [endDate, setEndDate] = useState("");
 
     function setValueHandler(field, newVal) {
         setForm(prevState => {
@@ -42,6 +55,32 @@ export default function Form(props) {
         e.preventDefault();
 
         if (session) {
+
+            setForm(prevState => {
+                let formState = {...prevState};
+                let daysArr = [];
+                if (su) daysArr.push('su');
+                if (m) daysArr.push('m');
+                if (t) daysArr.push('t');
+                if (w) daysArr.push('w');
+                if (th) daysArr.push('th');
+                if (f) daysArr.push('f');
+                if (s) daysArr.push('s');
+
+                const now = new Date();
+
+                formState['recursion'] = {
+                    repeatEvery: repeatEvery,
+                    repeatEveryCount: repeatEveryCount,
+                    days: daysArr,
+                    ends: ends,
+                    startDate: now,
+                    endDate: endDate
+                };
+                return formState;
+            });
+
+            console.log(form);
 
             const data = {
                 body: form,
@@ -101,71 +140,48 @@ export default function Form(props) {
                             type={'holiday'}
                         />
 
+                        <h4 className={'text-left mb-2 text-lg px-2'}>Custom recurrence</h4>
                         <div className={'px-2 mt-3'}>
-                            <select className={'w-full px-4 py-2 border-2 border-slate-300 rounded'}
-                                    name="recursive"
-                                    id="recursive"
-                                    value={form['recursiveType']}
-                                    onChange={(e) => setValueHandler('recursiveType', e.target.value)}
-                            >
-                                <option value="" disabled selected>Select Recursive Settings</option>
-                                <option value="NO OF WEEK">No. of Weeks</option>
-                                <option value="DATE RANGE">Date Range</option>
-                                <option value="UNTIL CANCELLED">Until Cancelled</option>
-
+                            <div className={'flex items-center'}>
+                                <span className={'mr-2'}>Repeat every</span>
+                                <input min={1} type={'number'} value={repeatEveryCount}
+                                       onChange={(e) => setRepeatEveryCount(e.target.value)}
+                                       className={'p-2 bg-slate-100 rounded-lg mr-2'}/>
+                                <select value={repeatEvery} onChange={(e) => setRepeatEvery(e.target.value)}
+                                        className={'p-2 bg-slate-100 rounded-lg mr-2'}>
+                                    <option value={'days'}>days</option>
+                                    <option value={'weeks'}>weeks</option>
+                                </select>
+                            </div>
+                        </div>
+                        {
+                            repeatEvery === 'weeks' && <>
+                                <span className={'flex mx-2'}>Repeat On</span>
+                                <div className="flex space-x-2 px-2">
+                                    <CircleButton title={'S'} onClick={() => setSu(prev => !prev)} isSelected={su}/>
+                                    <CircleButton title={'M'} onClick={() => setM(prev => !prev)} isSelected={m}/>
+                                    <CircleButton title={'T'} onClick={() => setT(prev => !prev)} isSelected={t}/>
+                                    <CircleButton title={'W'} onClick={() => setW(prev => !prev)} isSelected={w}/>
+                                    <CircleButton title={'T'} onClick={() => setTh(prev => !prev)} isSelected={th}/>
+                                    <CircleButton title={'F'} onClick={() => setF(prev => !prev)} isSelected={f}/>
+                                    <CircleButton title={'S'} onClick={() => setS(prev => !prev)} isSelected={s}/>
+                                </div>
+                            </>
+                        }
+                        <div className="flex items-center mt-2">
+                            <span className={'text-left mb-2 px-2'}>Ends</span>
+                            <select onChange={(e) => setEnds(e.target.value)}
+                                    className={'p-2 bg-slate-100 rounded-lg mr-2'}>
+                                <option value={'Never'}>Never</option>
+                                <option value={'On'}>On</option>
                             </select>
+                            {
+                                ends === 'On' ?
+                                    <input type={'date'} value={endDate} onChange={(e) => setEndDate(e.target.value)}
+                                           className={'p-2 bg-slate-100'}/> : null
+                            }
                         </div>
 
-                        {
-                            form['recursiveType'] === 'DATE RANGE' &&
-                            <div className={'px-2 mt-3 flex flex-col'}>
-                                <div className={'flex mb-5'}>
-                                    <p className={'text-left mr-3'}>Date Start</p>
-                                    <input
-                                        // value={}
-                                        className={'border-b border-slate-400'}
-                                        // id={'shiftStart'}
-                                        type={'date'}
-                                        // onChange={(e) => setTimeIn(type === 'daily' ? 'timeIn' : 'hTimeIn', e.target.value)}
-                                    />
-                                </div>
-                                <div className={'flex mb-5'}>
-                                    <p className={'text-left mr-3'}>Date End</p>
-                                    <input
-                                        // value={}
-                                        className={'border-b border-slate-400'}
-                                        // id={'shiftStart'}
-                                        type={'date'}
-                                        // onChange={(e) => setTimeIn(type === 'daily' ? 'timeIn' : 'hTimeIn', e.target.value)}
-                                    />
-                                </div>
-                            </div>
-                        }
-                        {
-                            form['recursiveType'] === 'NO OF WEEK' &&
-                            <div className={'px-2 mt-3 flex flex-col'}>
-                                <div className={'flex mb-5'}>
-                                    <p className={'text-left mr-3'}>Date Start</p>
-                                    <input
-                                        // value={}
-                                        className={'border-b border-slate-400'}
-                                        // id={'shiftStart'}
-                                        type={'date'}
-                                        // onChange={(e) => setTimeIn(type === 'daily' ? 'timeIn' : 'hTimeIn', e.target.value)}
-                                    />
-                                </div>
-                                <div className={'flex'}>
-                                    <p className={'text-left mr-3'}>No. of Weeks</p>
-                                    <input
-                                        // value={}
-                                        className={'border-b border-slate-400'}
-                                        // id={'shiftStart'}
-                                        type={'number'}
-                                        // onChange={(e) => setTimeIn(type === 'daily' ? 'timeIn' : 'hTimeIn', e.target.value)}
-                                    />
-                                </div>
-                            </div>
-                        }
 
                     </div>
                     <div className={'flex justify-end mt-8 mx-4'}>

@@ -156,7 +156,7 @@ export default function SitesForm(props) {
                                     selectedPlace === false ?
                                         <ul className={'absolute z-50 bg-slate-100 shadow-lg w-full px-1 mb-3 space-y-2'}>
                                             {
-                                                searches.length > 0 && searches.map((search, index) => <li key={index}
+                                                searches?.length > 0 && searches.map((search, index) => <li key={index}
                                                                                                            className={'hover:bg-slate-200 py-2'}>
                                                     <button type={'button'} onClick={async () => {
                                                         console.log('selected a place');

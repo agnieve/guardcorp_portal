@@ -6,13 +6,13 @@ import {getAllGuards} from "../../helpers/api-utils/users";
 import {addMemberShift} from "../../helpers/api-utils/shifts";
 export default function AddMemberForm(props) {
 
-    const { session, shiftId } = props;
+    const { session, shiftId, date } = props;
 
     const [selectedUser, setSelectedUser] = useState({});
 
     const {isLoading, isError, data: users, error} = useQuery({
         queryKey: ['guards'],
-        queryFn: getAllGuards.bind(this, session.user.accessToken),
+        queryFn: getAllGuards.bind(this, session?.user?.accessToken),
     });
 
     const queryClient = useQueryClient();
@@ -36,7 +36,8 @@ export default function AddMemberForm(props) {
             const data = {
                 body: {
                     userId: selectedUser._id,
-                    shiftId: shiftId
+                    shiftId: shiftId,
+                    date: date
                 },
                 header: session.user.accessToken,
             }

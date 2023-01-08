@@ -27,7 +27,7 @@ export default async function handler(req, res) {
         }
 
         const db = client.db();
-        const documents = await db.collection('shift_members').deleteOne({
+        const documents = await db.collection('teams').deleteOne({
             _id: ObjectId(id)
         });
 

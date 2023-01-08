@@ -7,7 +7,7 @@ async function handler(req, res) {
 
     if (req.method === 'POST') {
 
-        const {timeIn, timeOut, siteId, hTimeIn, hTimeOut} = req.body;
+        const {timeIn, timeOut, siteId, hTimeIn, hTimeOut, recursion} = req.body;
 
         let client;
         let db;
@@ -46,7 +46,8 @@ async function handler(req, res) {
                     siteName:selectedSite.siteName,
                 },
                 client: selectedClient,
-                hTimeIn, hTimeOut
+                hTimeIn, hTimeOut,
+                recursion:recursion
             });
 
             if (!result) {
@@ -57,7 +58,7 @@ async function handler(req, res) {
             await client.close();
 
         } catch (error) {
-            res.status(500).json({message: error});
+            res.status(500).json({message: error.message});
             return;
         }
 

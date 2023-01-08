@@ -55,7 +55,9 @@ export async function getShiftMembers(token, shiftId) {
             Authorization: `Bearer ${token}`,
         }
     });
-    return response.json();
+    const res = await response.json();
+    console.log('from getShiftMembers api',res);
+    return res;
 
 }
 

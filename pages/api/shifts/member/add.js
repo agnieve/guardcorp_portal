@@ -6,7 +6,7 @@ async function handler(req, res) {
 
     if (req.method === 'POST') {
 
-        const {shiftId, userId} = req.body;
+        const {shiftId, userId, date} = req.body;
 
         let client;
         let db;
@@ -29,9 +29,10 @@ async function handler(req, res) {
                 throw new Error('Invalid Token');
             }
 
-            const userExist = await db.collection('shift_members').findOne({
+            const userExist = await db.collection('teams').findOne({
                 'user._id': ObjectId(userId),
-                'shift._id': ObjectId(shiftId)
+                'shift._id': ObjectId(shiftId),
+                'date': date
             });
 
             if (userExist) {
@@ -55,9 +56,10 @@ async function handler(req, res) {
                 return;
             }
 
-            const result = await db.collection("shift_members").insertOne({
+            const result = await db.collection("teams").insertOne({
                 user: selectedUser,
                 shift: selectedShift,
+                date: date
             });
 
             if (!result) {

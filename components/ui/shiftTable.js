@@ -4,6 +4,8 @@ import React, {useEffect, useState} from "react";
 import { useTable, usePagination, useRowSelect, useSortBy } from "react-table";
 import {ChevronDownIcon, ChevronUpIcon} from '@heroicons/react/24/solid';
 import {useRouter} from 'next/router';
+import {useAtom} from "jotai";
+import {shiftSelected} from "../../atoms/shiftAtom";
 
 function Table({ columns, apiResult, hiddenColumns = []}) {
   const data = apiResult;
@@ -63,9 +65,12 @@ function Table({ columns, apiResult, hiddenColumns = []}) {
     state: { pageIndex, pageSize },
   } = tableInstance;
 
+  const [shift, setShift] = useAtom(shiftSelected);
+
   useEffect(()=> {
     if(selectedFlatRows.length > 0){
       const d = selectedFlatRows[0]?.original;
+      setShift(d);
       router.push(`/shifts/${d?._id}?title=${d?.client.name}, ${d?.site.siteName}, (${d?.timeIn} - ${d?.timeOut})`)
     }
   },[selectedFlatRows, router]);
